@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --cyber-green: #00ff66;
+    --cyber-green-glow: rgba(0, 255, 102, 0.4);
+    --cyber-cyan: #00f0ff;
+    --cyber-cyan-glow: rgba(0, 240, 255, 0.4);
+    --cyber-crimson: #ff0055;
+    --cyber-dark: #020408;
+    --cyber-panel: #050912;
+    --cyber-border: rgba(0, 255, 102, 0.25);
+  }
+
+  body {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #020408;
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+
+  code, pre, .font-mono, .terminal-text {
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+  }
+
+  h1, h2, h3, h4, .font-tactical {
+    font-family: 'Rajdhani', sans-serif;
+    letter-spacing: 0.06em;
+  }
+}
+
+/* Custom Scrollbar - Cyber Emerald */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020408;
+  border-left: 1px solid rgba(0, 255, 102, 0.08);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0f1c24;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 255, 102, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff66;
+  box-shadow: 0 0 12px rgba(0, 255, 102, 0.8);
+}
+
+/* Futuristic Scanline Effect */
+.scanlines {
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.35) 50%
+  ), linear-gradient(
+    90deg,
+    rgba(0, 255, 102, 0.02),
+    rgba(0, 240, 255, 0.02),
+    rgba(255, 0, 85, 0.015)
+  );
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Hacker Neon Glows */
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.3);
+}
+
+.glow-green-lg {
+  box-shadow: 0 0 35px rgba(0, 255, 102, 0.5), inset 0 0 15px rgba(0, 255, 102, 0.15);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+}
+
+.glow-cyan-lg {
+  box-shadow: 0 0 35px rgba(0, 240, 255, 0.5), inset 0 0 15px rgba(0, 240, 255, 0.15);
+}
+
+.glow-border-green {
+  border-color: rgba(0, 255, 102, 0.45);
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0, 255, 102, 0.05);
+}
+
+.glow-border-cyan {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.2), inset 0 0 15px rgba(0, 240, 255, 0.05);
+}
+
+/* Cyber Hex & Circuit Grid Backgrounds */
+.bg-cyber-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 255, 102, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 255, 102, 0.04) 1px, transparent 1px);
+}
+
+.bg-hex-grid {
+  background-image: radial-gradient(rgba(0, 240, 255, 0.15) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+/* Chromatic Aberration & Glitch Animations */
+@keyframes glitch-anim {
+  0% {
+    clip-path: inset(20% 0 60% 0);
+    transform: translate(-3px, 1px);
+  }
+  20% {
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(3px, -2px);
+  }
+  40% {
+    clip-path: inset(40% 0 30% 0);
+    transform: translate(-2px, 2px);
+  }
+  60% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(2px, -1px);
+  }
+  80% {
+    clip-path: inset(10% 0 70% 0);
+    transform: translate(-1px, 1px);
+  }
+  100% {
+    clip-path: inset(30% 0 50% 0);
+    transform: translate(1px, -2px);
+  }
+}
+
+.glitch-layer-cyan {
+  text-shadow: 2px 0 #00f0ff;
+  animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+.glitch-layer-magenta {
+  text-shadow: -2px 0 #ff0055;
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+/* Blinking Terminal Cursor */
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.animate-cursor {
+  animation: blink 0.9s infinite;
+}
+
+/* Laser sweep animation */
+@keyframes laser-sweep {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(1000%); opacity: 0; }
+}
+
+.animate-laser {
+  animation: laser-sweep 4s ease-in-out infinite;
+}
