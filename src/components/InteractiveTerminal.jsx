@@ -27,12 +27,31 @@ export default function InteractiveTerminal({ isOpen, onClose }) {
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
 
+  // Helper to reliably focus command line input and place cursor at end
+  const focusCommandLine = () => {
+    // If user is selecting text (e.g. to copy command output), do not steal selection
+    const selection = window.getSelection();
+    if (selection && selection.toString().length > 0) {
+      return;
+    }
+    if (inputRef.current) {
+      inputRef.current.focus();
+      const len = inputRef.current.value.length;
+      inputRef.current.setSelectionRange(len, len);
+    }
+  };
+
   // Focus input when opened
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => {
-        if (inputRef.current) inputRef.current.focus();
-      }, 100);
+      const t1 = setTimeout(focusCommandLine, 50);
+      const t2 = setTimeout(focusCommandLine, 180);
+      const t3 = setTimeout(focusCommandLine, 350);
+      return () => {
+        clearTimeout(t1);
+        clearTimeout(t2);
+        clearTimeout(t3);
+      };
     }
   }, [isOpen]);
 
@@ -468,12 +487,19 @@ D R Akshay // Defending Distributed Enterprise Infrastructure Across India.`;
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/85 backdrop-blur-md animate-fadeIn"
     >
       {/* TERMINAL WINDOW */}
-      <div className="relative w-full max-w-4xl h-[620px] max-h-[90vh] rounded-xl bg-slate-950 border border-emerald-500/50 glow-green-lg flex flex-col overflow-hidden shadow-2xl">
+      <div
+        onClick={focusCommandLine}
+        className="relative w-full max-w-4xl h-[620px] max-h-[90vh] rounded-xl bg-slate-950 border border-emerald-500/50 glow-green-lg flex flex-col overflow-hidden shadow-2xl cursor-text"
+      >
+        {/* CRT Scanline visual overlay (isolated with pointer-events-none) */}
+        <div className="absolute inset-0 scanlines pointer-events-none opacity-20 z-0" />
+
         {/* WINDOW TITLE BAR */}
-        <div className="h-10 bg-slate-900 border-b border-emerald-500/30 px-4 flex items-center justify-between select-none">
+        <div className="relative z-10 h-10 bg-slate-900 border-b border-emerald-500/30 px-4 flex items-center justify-between select-none cursor-default">
           <div className="flex items-center gap-2">
             <span
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sounds.playBeep(700, 0.05);
                 onClose();
               }}
@@ -493,11 +519,12 @@ D R Akshay // Defending Distributed Enterprise Infrastructure Across India.`;
               PRESS <strong className="text-white">ESC</strong> TO CLOSE
             </span>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 sounds.playBeep(700, 0.05);
                 onClose();
               }}
-              className="p-1 rounded text-gray-400 hover:text-white hover:bg-slate-800 transition"
+              className="p-1 rounded text-gray-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
               aria-label="Close terminal"
             >
               <X className="w-4 h-4" />
@@ -507,8 +534,8 @@ D R Akshay // Defending Distributed Enterprise Infrastructure Across India.`;
 
         {/* TERMINAL BUFFER */}
         <div
-          onClick={() => inputRef.current && inputRef.current.focus()}
-          className="flex-1 p-4 sm:p-6 overflow-y-auto font-mono text-xs sm:text-sm space-y-3 bg-black/95 scanlines text-gray-200"
+          onClick={focusCommandLine}
+          className="relative z-10 flex-1 p-4 sm:p-6 overflow-y-auto font-mono text-xs sm:text-sm space-y-3 bg-black/95 text-gray-200 cursor-text select-text pointer-events-auto"
         >
           {history.map((item, idx) => (
             <div key={idx}>
@@ -532,7 +559,10 @@ D R Akshay // Defending Distributed Enterprise Infrastructure Across India.`;
           ))}
 
           {/* ACTIVE COMMAND INPUT */}
-          <div className="flex items-center gap-2 text-white pt-2">
+          <div
+            onClick={focusCommandLine}
+            className="flex items-center gap-2 text-white pt-2 cursor-text"
+          >
             <span className="text-cyan-400 font-bold shrink-0">akshay@sec-ops:~$</span>
             <input
               ref={inputRef}
@@ -540,10 +570,10 @@ D R Akshay // Defending Distributed Enterprise Infrastructure Across India.`;
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
               onKeyDown={handleCommand}
-              className="flex-1 bg-transparent border-none outline-none font-mono text-xs sm:text-sm text-emerald-300 min-w-0"
+              className="flex-1 bg-transparent border-none outline-none font-mono text-xs sm:text-sm text-emerald-300 min-w-0 cursor-text focus:outline-none focus:ring-0"
               autoFocus
               spellCheck={false}
-              placeholder="type 'help', 'ls', 'whoami' or 'exit'..."
+              placeholder="type 'help', 'ls', 'whoami', 'nyx' or 'exit'..."
             />
           </div>
           <div ref={bottomRef} />
