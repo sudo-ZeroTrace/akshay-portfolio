@@ -112,6 +112,9 @@ export default function ResumeModal({ isOpen, onClose }) {
                 <a href={`tel:${personalInfo.phone}`} className="flex items-center gap-1.5 hover:text-emerald-400 transition">
                   <Phone className="w-3.5 h-3.5 text-emerald-400" /> {personalInfo.phone}
                 </a>
+                <a href={personalInfo.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-emerald-400 transition">
+                  <ExternalLink className="w-3.5 h-3.5 text-emerald-400" /> github.com/sudo-ZeroTrace
+                </a>
               </div>
             </div>
           </div>

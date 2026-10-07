@@ -9,7 +9,7 @@ export const nyxProfile = {
   email: "dr.akxhay@gmail.com",
   phone: "+91 9778585563",
   linkedin: "https://www.linkedin.com/in/drakshay",
-  github: "https://github.com/drakshay",
+  github: "https://github.com/sudo-ZeroTrace",
   clearance: "LEVEL 5 // ENTERPRISE SEC_OPS",
   node: "WAYNE-SEC-NODE-KOCHI-01",
   stats: {

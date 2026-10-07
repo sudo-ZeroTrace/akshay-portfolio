@@ -9,7 +9,7 @@ export const personalInfo = {
   email: "dr.akxhay@gmail.com",
   phone: "+91 9778585563",
   linkedin: "https://www.linkedin.com/in/drakshay",
-  github: "https://github.com/drakshay",
+  github: "https://github.com/sudo-ZeroTrace",
   twitter: "https://x.com",
   instagram: "https://instagram.com",
   batcomputerNode: "WAYNE-SEC-NODE-KOCHI-01",

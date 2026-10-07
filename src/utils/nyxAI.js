@@ -327,7 +327,7 @@ export function generateNyxResponse(userQuery) {
         `• **Phone / WhatsApp:** [${personalInfo.phone}](tel:${personalInfo.phone})\n` +
         `• **Location Base:** ${personalInfo.location}\n` +
         `• **LinkedIn:** [linkedin.com/in/drakshay](${personalInfo.linkedin})\n` +
-        `• **GitHub:** [github.com/drakshay](${personalInfo.github})\n\n` +
+        `• **GitHub:** [github.com/sudo-ZeroTrace](${personalInfo.github})\n\n` +
         `**Operational Status:** Available for IT Support & Security Engineering opportunities. Response time is typically within a few hours.`,
       actionButtons: [
         { label: '📧 Send Email Transmission', action: 'email', target: personalInfo.email, icon: 'Mail' },
