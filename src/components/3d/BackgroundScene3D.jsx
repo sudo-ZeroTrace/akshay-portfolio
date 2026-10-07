@@ -12,13 +12,12 @@ export default function BackgroundScene3D({ theme = 'emerald', intensity = 0.85 
     let width = window.innerWidth;
     let height = window.innerHeight;
 
-    // SCENE SETUP
+    // SCENE & CAMERA SETUP
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x020408, 0.024);
+    scene.fog = new THREE.FogExp2(0x020408, 0.022);
 
-    // CAMERA SETUP
-    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
-    camera.position.set(0, 0, 24);
+    const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 26);
 
     // RENDERER
     const renderer = new THREE.WebGLRenderer({
@@ -29,234 +28,155 @@ export default function BackgroundScene3D({ theme = 'emerald', intensity = 0.85 
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
+    renderer.toneMappingExposure = 1.1;
+    container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
-    // COLOR PALETTE MAP (FUTURISTIC DARK HACKER)
+    // COLOR PALETTE MAP (DARK HACKER DEFENSE)
     const colorMap = {
       emerald: {
         primary: 0x00ff66,
-        primaryHex: '#00ff66',
         secondary: 0x00f0ff,
-        core: 0x051a10,
-        particles: 0x00ff66,
-        glowLight: 0x00ff88
+        grid: 0x062816,
+        nodes: 0x00ff66,
+        lines: 0x00ff88
       },
       cyan: {
         primary: 0x00f0ff,
-        primaryHex: '#00f0ff',
         secondary: 0x38bdf8,
-        core: 0x041a24,
-        particles: 0x00f0ff,
-        glowLight: 0x38bdf8
+        grid: 0x062030,
+        nodes: 0x00f0ff,
+        lines: 0x38bdf8
       },
       crimson: {
         primary: 0xff0055,
-        primaryHex: '#ff0055',
         secondary: 0xf43f5e,
-        core: 0x24040d,
-        particles: 0xff0055,
-        glowLight: 0xf43f5e
+        grid: 0x2e0612,
+        nodes: 0xff0055,
+        lines: 0xf43f5e
       },
       amber: {
         primary: 0xf59e0b,
-        primaryHex: '#f59e0b',
         secondary: 0xfbbf24,
-        core: 0x1f1404,
-        particles: 0xf59e0b,
-        glowLight: 0xfbbf24
+        grid: 0x281905,
+        nodes: 0xf59e0b,
+        lines: 0xfbbf24
       }
     };
     const activeColor = colorMap[theme] || colorMap.emerald;
 
-    // LIGHTING
-    const ambientLight = new THREE.AmbientLight(0x02050a, 1.8);
-    scene.add(ambientLight);
+    // 1. CYBER DEFENSE NODE CONSTELLATION (1000+ BRANCHES MESH TOPOLOGY)
+    const nodeCount = 110;
+    const nodeCoords = [];
+    const nodeVelocities = [];
+    const maxLinkDistance = 5.2;
 
-    const coreLight = new THREE.PointLight(activeColor.glowLight, 5.0, 30);
-    coreLight.position.set(0, 0, 4);
-    scene.add(coreLight);
+    for (let i = 0; i < nodeCount; i++) {
+      nodeCoords.push(
+        (Math.random() - 0.5) * 44, // x
+        (Math.random() - 0.5) * 32, // y
+        (Math.random() - 0.5) * 16  // z
+      );
+      nodeVelocities.push({
+        x: (Math.random() - 0.5) * 0.015,
+        y: (Math.random() - 0.5) * 0.015,
+        z: (Math.random() - 0.5) * 0.008
+      });
+    }
 
-    const rimLight = new THREE.PointLight(activeColor.secondary, 2.8, 35);
-    rimLight.position.set(-12, 8, 8);
-    scene.add(rimLight);
+    const nodePositions = new Float32Array(nodeCoords);
+    const nodeGeo = new THREE.BufferGeometry();
+    nodeGeo.setAttribute('position', new THREE.BufferAttribute(nodePositions, 3));
 
-    // 1. QUANTUM CYBER DEFENSE CORE (3D TORUS KNOT + ICOSAHEDRON)
-    const coreGroup = new THREE.Group();
-    coreGroup.position.set(0, 0.8, 0);
-
-    // A. Torus Knot Geometry (Quantum Defense Coil)
-    const knotGeo = new THREE.TorusKnotGeometry(3.6, 0.85, 128, 24, 2, 3);
-    const knotMat = new THREE.MeshStandardMaterial({
-      color: activeColor.core,
-      metalness: 0.95,
-      roughness: 0.15,
-      wireframe: false
+    // Glowing Node Points
+    const nodeMat = new THREE.PointsMaterial({
+      color: activeColor.nodes,
+      size: 0.28,
+      transparent: true,
+      opacity: 0.85,
+      blending: THREE.AdditiveBlending
     });
-    const knotMesh = new THREE.Mesh(knotGeo, knotMat);
-    coreGroup.add(knotMesh);
+    const nodePoints = new THREE.Points(nodeGeo, nodeMat);
+    scene.add(nodePoints);
 
-    // B. Wireframe Glowing Cyber Armor
-    const knotWireGeo = new THREE.WireframeGeometry(knotGeo);
-    const knotWireMat = new THREE.LineBasicMaterial({
-      color: activeColor.primary,
+    // Dynamic Cyber Mesh Links (Connecting nearby branch nodes)
+    const maxLines = nodeCount * 8;
+    const linePositions = new Float32Array(maxLines * 6);
+    const lineColors = new Float32Array(maxLines * 6);
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+    lineGeo.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
+
+    const lineMat = new THREE.LineBasicMaterial({
+      vertexColors: true,
       transparent: true,
       opacity: 0.45,
       blending: THREE.AdditiveBlending
     });
-    const knotWireMesh = new THREE.LineSegments(knotWireGeo, knotWireMat);
-    knotMesh.add(knotWireMesh);
+    const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+    scene.add(lineMesh);
 
-    // C. Central Floating Encrypted Data Core (Icosahedron)
-    const icoGeo = new THREE.IcosahedronGeometry(1.6, 1);
-    const icoMat = new THREE.MeshBasicMaterial({
-      color: activeColor.secondary,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.85
-    });
-    const icoMesh = new THREE.Mesh(icoGeo, icoMat);
-    coreGroup.add(icoMesh);
+    // 2. MATRIX RAIN DIGITAL GLYPH PARTICLES
+    const rainCount = 450;
+    const rainPositions = new Float32Array(rainCount * 3);
+    const rainSpeeds = new Float32Array(rainCount);
 
-    scene.add(coreGroup);
-
-    // 2. CONCENTRIC CYBER FIREWALL & RADAR GIMBAL RINGS
-    const ring1Geo = new THREE.TorusGeometry(8.2, 0.05, 8, 96);
-    const ring1Mat = new THREE.MeshBasicMaterial({
-      color: activeColor.primary,
-      transparent: true,
-      opacity: 0.4
-    });
-    const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
-    coreGroup.add(ring1);
-
-    const ring2Geo = new THREE.TorusGeometry(10.2, 0.04, 8, 96);
-    const ring2Mat = new THREE.MeshBasicMaterial({
-      color: activeColor.secondary,
-      transparent: true,
-      opacity: 0.25
-    });
-    const ring2 = new THREE.Mesh(ring2Geo, ring2Mat);
-    ring2.rotation.x = Math.PI / 3;
-    coreGroup.add(ring2);
-
-    // 3. SUBTERRANEAN CYBER GRID (HACKER HORIZON PLANE)
-    const gridHelper = new THREE.GridHelper(60, 48, activeColor.primary, 0x091420);
-    gridHelper.position.y = -8;
-    gridHelper.material.transparent = true;
-    gridHelper.material.opacity = 0.28;
-    scene.add(gridHelper);
-
-    // 4. MATRIX CODE RAINFALL & LIVE HACKER STREAM SNIPPETS
-    const hackerTelemetry = [
-      "0x7FFF9A4B: MEMORY INTEGRITY ZEROIZED",
-      "nmap -sS -A -T4 10.0.0.0/8 [STEALTH]",
-      "[EDR_CONTAIN]: Host isolated PID 0x48FA",
-      "fortigate# set ipsec-ikev2 aes256gcm",
-      "snort[4902]: ZERO-DAY BUFFER OVERFLOW PREVENTED",
-      "iptables -A INPUT -p tcp --dport 22 -j ACCEPT",
-      "splunk --telemetry | eval status='ISOLATED'",
-      "ad_hardening.ps1: 1420 enterprise accounts verified",
-      "caddy-proxy: strict TLS 1.3 handshake validated",
-      "fail2ban[daemon]: banned 14 malicious subnets",
-      "root@darknet-sec:~# sudo ./contain_breach.sh",
-      "wireshark: packet dissection 0xDEADBEEF clean",
-      "docker container: 18 microservices hardened"
-    ];
-
-    const telemetryGroup = new THREE.Group();
-    const telemetryCards = [];
-
-    hackerTelemetry.forEach((text, i) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 512;
-      canvas.height = 72;
-      const ctx = canvas.getContext('2d');
-
-      ctx.fillStyle = 'rgba(2, 6, 12, 0.85)';
-      ctx.fillRect(0, 0, 512, 72);
-      ctx.strokeStyle = `rgba(0, 255, 102, 0.5)`;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(2, 2, 508, 68);
-
-      // Cyber bracket stamp
-      ctx.fillStyle = activeColor.primaryHex;
-      ctx.font = 'bold 20px "Courier New", monospace';
-      ctx.fillText(`[HACK_OPS] >_ ${text}`, 14, 42);
-
-      const texture = new THREE.CanvasTexture(canvas);
-      const spriteMat = new THREE.SpriteMaterial({
-        map: texture,
-        transparent: true,
-        opacity: 0.45 + Math.random() * 0.25,
-        blending: THREE.AdditiveBlending
-      });
-      const sprite = new THREE.Sprite(spriteMat);
-
-      const angle = (i / hackerTelemetry.length) * Math.PI * 2;
-      const radius = 12 + Math.random() * 8;
-      sprite.position.x = Math.cos(angle) * radius;
-      sprite.position.y = -7 + Math.random() * 14;
-      sprite.position.z = Math.sin(angle) * radius - 4;
-      sprite.scale.set(7.5, 1.05, 1);
-
-      sprite.userData = {
-        speedY: 0.009 + Math.random() * 0.014,
-        angle: angle,
-        radius: radius,
-        rotSpeed: 0.0016 * (Math.random() > 0.5 ? 1 : -1)
-      };
-
-      telemetryCards.push(sprite);
-      telemetryGroup.add(sprite);
-    });
-
-    scene.add(telemetryGroup);
-
-    // 5. MATRIX DATA STREAM RAIN PARTICLES
-    const particleCount = 380;
-    const particleGeo = new THREE.BufferGeometry();
-    const particlePositions = new Float32Array(particleCount * 3);
-    const particleSpeeds = new Float32Array(particleCount);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-      particlePositions[i] = (Math.random() - 0.5) * 55;
-      particlePositions[i + 1] = (Math.random() - 0.5) * 45;
-      particlePositions[i + 2] = (Math.random() - 0.5) * 40;
-      particleSpeeds[i / 3] = 0.05 + Math.random() * 0.12;
+    for (let i = 0; i < rainCount; i++) {
+      rainPositions[i * 3] = (Math.random() - 0.5) * 55;
+      rainPositions[i * 3 + 1] = (Math.random() - 0.5) * 45;
+      rainPositions[i * 3 + 2] = (Math.random() - 0.5) * 22;
+      rainSpeeds[i] = 0.08 + Math.random() * 0.16;
     }
 
-    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const rainGeo = new THREE.BufferGeometry();
+    rainGeo.setAttribute('position', new THREE.BufferAttribute(rainPositions, 3));
 
-    const particleMat = new THREE.PointsMaterial({
-      color: activeColor.particles,
-      size: 0.18,
+    const rainMat = new THREE.PointsMaterial({
+      color: activeColor.primary,
+      size: 0.16,
       transparent: true,
-      opacity: 0.65,
+      opacity: 0.6,
       blending: THREE.AdditiveBlending
     });
+    const rainPoints = new THREE.Points(rainGeo, rainMat);
+    scene.add(rainPoints);
 
-    const particles = new THREE.Points(particleGeo, particleMat);
-    scene.add(particles);
+    // 3. PERSPECTIVE CYBER HORIZON GRID (SUBTERRANEAN DEFENSE MESH)
+    const gridHelper = new THREE.GridHelper(70, 50, activeColor.primary, activeColor.grid);
+    gridHelper.position.y = -9.5;
+    gridHelper.material.transparent = true;
+    gridHelper.material.opacity = 0.35;
+    scene.add(gridHelper);
 
-    // MOUSE PARALLAX & SCROLL INTERACTION
+    // 4. CONCENTRIC DEFENSE RADAR RINGS IN DEEP BACKGROUND
+    const radarGroup = new THREE.Group();
+    radarGroup.position.set(0, 0, -8);
+
+    [10, 16, 22].forEach((radius, idx) => {
+      const ringGeo = new THREE.RingGeometry(radius, radius + 0.06, 64);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: activeColor.primary,
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.12 - idx * 0.03
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      radarGroup.add(ring);
+    });
+    scene.add(radarGroup);
+
+    // MOUSE TRACKING & PARALLAX
     let mouseX = 0;
     let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    let scrollY = 0;
+    let targetCameraX = 0;
+    let targetCameraY = 0;
 
     const handlePointerMove = (e) => {
       mouseX = (e.clientX / width - 0.5) * 2;
-      mouseY = (e.clientY / height - 0.5) * 2;
-    };
-
-    const handleScroll = () => {
-      scrollY = window.scrollY;
+      mouseY = -(e.clientY / height - 0.5) * 2;
     };
 
     window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
 
     const handleResize = () => {
       width = window.innerWidth;
@@ -277,49 +197,89 @@ export default function BackgroundScene3D({ theme = 'emerald', intensity = 0.85 
       const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
 
-      // Smooth mouse lerping
-      targetX += (mouseX - targetX) * 0.05;
-      targetY += (mouseY - targetY) * 0.05;
+      // Smooth Camera Parallax to Mouse
+      targetCameraX += (mouseX * 1.5 - targetCameraX) * 0.04;
+      targetCameraY += (mouseY * 1.2 - targetCameraY) * 0.04;
+      camera.position.x = targetCameraX;
+      camera.position.y = targetCameraY;
+      camera.lookAt(0, 0, 0);
 
-      // Rotate Quantum Cyber Core
-      knotMesh.rotation.x = elapsed * 0.25 + targetY * 0.2;
-      knotMesh.rotation.y = elapsed * 0.35 + targetX * 0.3;
-      icoMesh.rotation.y = -elapsed * 0.6;
-      icoMesh.rotation.x = elapsed * 0.4;
+      // Radar slow rotation & breath
+      radarGroup.rotation.z = elapsed * 0.06;
 
-      // Pulse Central Light
-      coreLight.intensity = 4.0 + Math.sin(elapsed * 2) * 1.5;
+      // Animate Subterranean Cyber Grid forward motion
+      gridHelper.position.z = (elapsed * 2.5) % (70 / 50);
 
-      // Gimbals spin
-      ring1.rotation.z += delta * 0.2;
-      ring2.rotation.y += delta * 0.28;
+      // 1. UPDATE NODE CONSTELLATION POSITIONS & MESH CONNECTIONS
+      const posAttr = nodeGeo.attributes.position;
+      const posArray = posAttr.array;
 
-      // Float Telemetry Strings
-      telemetryCards.forEach((card) => {
-        card.userData.angle += card.userData.rotSpeed;
-        card.position.x = Math.cos(card.userData.angle) * card.userData.radius;
-        card.position.z = Math.sin(card.userData.angle) * card.userData.radius - 4;
-        card.position.y += card.userData.speedY;
+      for (let i = 0; i < nodeCount; i++) {
+        const i3 = i * 3;
+        posArray[i3] += nodeVelocities[i].x;
+        posArray[i3 + 1] += nodeVelocities[i].y;
+        posArray[i3 + 2] += nodeVelocities[i].z;
 
-        if (card.position.y > 11) {
-          card.position.y = -10;
-        }
-      });
+        // Bounce back inside boundary
+        if (Math.abs(posArray[i3]) > 22) nodeVelocities[i].x *= -1;
+        if (Math.abs(posArray[i3 + 1]) > 16) nodeVelocities[i].y *= -1;
+        if (Math.abs(posArray[i3 + 2]) > 8) nodeVelocities[i].z *= -1;
+      }
+      posAttr.needsUpdate = true;
 
-      // Matrix Rain Effect (Particles falling downward)
-      const positions = particleGeo.attributes.position.array;
-      for (let i = 1; i < particleCount * 3; i += 3) {
-        positions[i] -= particleSpeeds[Math.floor(i / 3)];
-        if (positions[i] < -20) {
-          positions[i] = 20;
+      // Build Connecting Dynamic Links between nearby nodes
+      let lineIndex = 0;
+      const cPrimary = new THREE.Color(activeColor.lines);
+
+      for (let i = 0; i < nodeCount; i++) {
+        const x1 = posArray[i * 3];
+        const y1 = posArray[i * 3 + 1];
+        const z1 = posArray[i * 3 + 2];
+
+        for (let j = i + 1; j < nodeCount; j++) {
+          const x2 = posArray[j * 3];
+          const y2 = posArray[j * 3 + 1];
+          const z2 = posArray[j * 3 + 2];
+
+          const distSq = (x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2;
+
+          if (distSq < maxLinkDistance ** 2 && lineIndex < maxLines) {
+            const alpha = 1.0 - Math.sqrt(distSq) / maxLinkDistance;
+
+            const ptr = lineIndex * 6;
+            linePositions[ptr] = x1;
+            linePositions[ptr + 1] = y1;
+            linePositions[ptr + 2] = z1;
+            linePositions[ptr + 3] = x2;
+            linePositions[ptr + 4] = y2;
+            linePositions[ptr + 5] = z2;
+
+            lineColors[ptr] = cPrimary.r * alpha;
+            lineColors[ptr + 1] = cPrimary.g * alpha;
+            lineColors[ptr + 2] = cPrimary.b * alpha;
+            lineColors[ptr + 3] = cPrimary.r * alpha;
+            lineColors[ptr + 4] = cPrimary.g * alpha;
+            lineColors[ptr + 5] = cPrimary.b * alpha;
+
+            lineIndex++;
+          }
         }
       }
-      particleGeo.attributes.position.needsUpdate = true;
 
-      // Camera parallax
-      camera.position.x = targetX * 2.2;
-      camera.position.y = -targetY * 1.8;
-      camera.lookAt(0, -scrollY * 0.002, 0);
+      lineGeo.attributes.position.needsUpdate = true;
+      lineGeo.attributes.color.needsUpdate = true;
+      lineGeo.setDrawRange(0, lineIndex * 2);
+
+      // 2. UPDATE MATRIX RAIN PARTICLES
+      const rainPos = rainGeo.attributes.position.array;
+      for (let i = 0; i < rainCount; i++) {
+        rainPos[i * 3 + 1] -= rainSpeeds[i];
+        if (rainPos[i * 3 + 1] < -22) {
+          rainPos[i * 3 + 1] = 22;
+          rainPos[i * 3] = (Math.random() - 0.5) * 55;
+        }
+      }
+      rainGeo.attributes.position.needsUpdate = true;
 
       renderer.render(scene, camera);
     };
@@ -329,33 +289,22 @@ export default function BackgroundScene3D({ theme = 'emerald', intensity = 0.85 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
       if (container && renderer.domElement) {
-        container.removeChild(renderer.domElement);
+        container.innerHTML = '';
       }
       renderer.dispose();
-      knotGeo.dispose();
-      knotMat.dispose();
-      knotWireGeo.dispose();
-      knotWireMat.dispose();
-      icoGeo.dispose();
-      icoMat.dispose();
-      ring1Geo.dispose();
-      ring1Mat.dispose();
-      ring2Geo.dispose();
-      ring2Mat.dispose();
-      particleGeo.dispose();
-      particleMat.dispose();
+      nodeGeo.dispose();
+      lineGeo.dispose();
+      rainGeo.dispose();
     };
-  }, [theme]);
+  }, [theme, intensity]);
 
   return (
     <div
       ref={mountRef}
-      className="fixed inset-0 pointer-events-none z-0 transition-opacity duration-700"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#020408]"
       style={{ opacity: intensity }}
-      aria-hidden="true"
     />
   );
 }

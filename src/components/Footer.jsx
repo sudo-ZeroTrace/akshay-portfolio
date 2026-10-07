@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
-import { Shield, ArrowUp, Terminal, Radio, Cpu, Lock } from 'lucide-react';
+import { Shield, ArrowUp, Terminal, Radio, Cpu, Lock, FileText } from 'lucide-react';
 
-export default function Footer({ onOpenTerminal }) {
+export default function Footer({ onOpenTerminal, onOpenResume }) {
   const [currentTime, setCurrentTime] = useState('');
 
   useEffect(() => {
@@ -56,7 +56,21 @@ export default function Footer({ onOpenTerminal }) {
         </div>
 
         {/* RIGHT ACTIONS */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          {onOpenResume && (
+            <button
+              onClick={() => {
+                sounds.playBeep(1100, 0.04);
+                onOpenResume();
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-900 border border-slate-800 hover:border-emerald-500/40 text-gray-300 hover:text-emerald-300 transition"
+              title="Inspect Verified Resume [R]"
+            >
+              <FileText className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Resume [R]</span>
+            </button>
+          )}
+
           <button
             onClick={() => {
               sounds.playAlert();

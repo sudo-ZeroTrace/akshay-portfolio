@@ -2,14 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { sounds } from '../utils/soundEffects';
 import {
   Terminal, Shield, Volume2, VolumeX, Menu, X,
-  Palette, Cpu, Activity, Lock, KeyRound
+  Palette, Cpu, Activity, Lock, KeyRound, HelpCircle,
+  Clock, Sparkles, FileText
 } from 'lucide-react';
 
-export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThemeChange }) {
+export default function Navbar({
+  onOpenTerminal,
+  onOpenHotkeys,
+  onOpenNyx,
+  onOpenResume,
+  activeTheme = 'emerald',
+  onThemeChange
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(sounds.isMuted());
   const [showThemeMenu, setShowThemeMenu] = useState(false);
+  const [currentTime, setCurrentTime] = useState('');
+
+  // Live real-time SOC Clock
+  useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      setCurrentTime(
+        now.toLocaleTimeString('en-US', { hour12: false }) + ' IST'
+      );
+    };
+    updateClock();
+    const timer = setInterval(updateClock, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,8 +67,8 @@ export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThem
     <header
       className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
         isScrolled
-          ? 'bg-slate-950/95 backdrop-blur-md border-b border-emerald-500/25 py-3 shadow-[0_4px_25px_rgba(0,0,0,0.8)]'
-          : 'bg-transparent py-5'
+          ? 'bg-slate-950/95 backdrop-blur-md border-b border-emerald-500/25 py-2.5 shadow-[0_4px_25px_rgba(0,0,0,0.8)]'
+          : 'bg-transparent py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -70,8 +92,13 @@ export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThem
                 ROOT_SEC
               </span>
             </div>
-            <div className="text-[10px] font-mono text-gray-500 -mt-1 hidden sm:block">
-              INFRASTRUCTURE DEFENSE GRID
+            <div className="text-[10px] font-mono text-gray-500 -mt-1 hidden sm:flex items-center gap-2">
+              <span>INFRASTRUCTURE DEFENSE</span>
+              {currentTime && (
+                <span className="text-emerald-400/90 font-bold flex items-center gap-1">
+                  • {currentTime}
+                </span>
+              )}
             </div>
           </div>
         </a>
@@ -91,7 +118,20 @@ export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThem
         </nav>
 
         {/* TACTICAL UTILITIES & ACTIONS */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* HOTKEYS CHEAT SHEET MODAL TRIGGER */}
+          <button
+            onClick={() => {
+              sounds.playBeep(950, 0.04);
+              if (onOpenHotkeys) onOpenHotkeys();
+            }}
+            className="p-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/40 text-gray-400 hover:text-emerald-300 transition hidden sm:flex items-center justify-center"
+            title="Tactical Keyboard Shortcuts [?]"
+            aria-label="Keyboard Shortcuts"
+          >
+            <HelpCircle className="w-4 h-4" />
+          </button>
+
           {/* THEME PICKER */}
           <div className="relative">
             <button
@@ -100,7 +140,7 @@ export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThem
                 setShowThemeMenu(!showThemeMenu);
               }}
               className="p-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/40 text-gray-400 hover:text-emerald-300 transition"
-              title="Change Hacker Theme"
+              title="Change Hacker Theme [T]"
               aria-label="Theme selection"
             >
               <Palette className="w-4 h-4" />
@@ -137,10 +177,44 @@ export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThem
           <button
             onClick={handleAudioToggle}
             className="p-2 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/40 text-gray-400 hover:text-emerald-300 transition"
-            title={isMuted ? 'Unmute Cyber SFX' : 'Mute Cyber SFX'}
+            title={isMuted ? 'Unmute Cyber SFX [M]' : 'Mute Cyber SFX [M]'}
             aria-label="Toggle audio effects"
           >
             {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4 text-emerald-400" />}
+          </button>
+
+          {/* RESUME DOSSIER BUTTON */}
+          <button
+            onClick={() => {
+              sounds.playBeep(1100, 0.04);
+              if (onOpenResume) onOpenResume();
+            }}
+            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-emerald-500/40 text-gray-300 hover:text-emerald-300 font-mono text-xs transition"
+            title="Inspect Verified Resume [R]"
+          >
+            <FileText className="w-3.5 h-3.5 text-emerald-400" />
+            <span>RESUME [R]</span>
+          </button>
+
+          {/* NYX AI ASSISTANT CHAT TRIGGER */}
+          <button
+            onClick={() => {
+              sounds.playNyxOpen();
+              if (onOpenNyx) onOpenNyx();
+            }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-950/70 border border-emerald-500/60 text-emerald-300 font-mono text-xs hover:bg-emerald-500/20 hover:border-emerald-400 transition glow-green group"
+            title="Chat with Nyx AI Tactical Assistant [N]"
+            aria-label="Open Nyx AI Assistant"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400 group-hover:rotate-12 transition-transform" />
+            <span className="font-bold tracking-wider">NYX AI</span>
+            <span className="hidden md:inline px-1 py-0.2 rounded bg-emerald-500/20 text-[9px] text-cyan-300 border border-emerald-500/30">
+              [N]
+            </span>
           </button>
 
           {/* LAUNCH CLI BUTTON */}
@@ -186,17 +260,44 @@ export default function Navbar({ onOpenTerminal, activeTheme = 'emerald', onThem
                 // {link.name}
               </a>
             ))}
-            <button
-              onClick={() => {
-                sounds.playAlert();
-                setIsMobileMenuOpen(false);
-                onOpenTerminal();
-              }}
-              className="mt-3 w-full py-2.5 rounded-lg bg-emerald-500 text-slate-950 font-tactical font-bold text-sm flex items-center justify-center gap-2 glow-green"
-            >
-              <Terminal className="w-4 h-4" />
-              <span>Launch Dark-Net CLI</span>
-            </button>
+
+            <div className="pt-3 flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  sounds.playNyxOpen();
+                  setIsMobileMenuOpen(false);
+                  if (onOpenNyx) onOpenNyx();
+                }}
+                className="w-full py-2.5 rounded-lg bg-emerald-950/80 border border-emerald-500/60 text-emerald-300 font-mono font-bold text-xs flex items-center justify-center gap-2 glow-green"
+              >
+                <Sparkles className="w-4 h-4 text-emerald-400" />
+                <span>Chat with Nyx AI (Voice & Text) [N]</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  sounds.playBeep(1100, 0.04);
+                  setIsMobileMenuOpen(false);
+                  if (onOpenResume) onOpenResume();
+                }}
+                className="w-full py-2.5 rounded-lg bg-slate-900 border border-slate-800 text-gray-200 font-mono text-xs flex items-center justify-center gap-2"
+              >
+                <FileText className="w-4 h-4 text-emerald-400" />
+                <span>View Resume Dossier [R]</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  sounds.playAlert();
+                  setIsMobileMenuOpen(false);
+                  onOpenTerminal();
+                }}
+                className="w-full py-2.5 rounded-lg bg-emerald-500 text-slate-950 font-tactical font-bold text-sm flex items-center justify-center gap-2 glow-green"
+              >
+                <Terminal className="w-4 h-4" />
+                <span>Launch Dark-Net CLI</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -3,10 +3,8 @@ import * as THREE from 'three';
 import { projects } from '../../data/portfolioData';
 import { sounds } from '../../utils/soundEffects';
 import {
-  Shield, Terminal, Cpu, Lock, Network, Server,
-  ChevronLeft, ChevronRight, Maximize2, X, Play,
-  CheckCircle, AlertTriangle, ExternalLink, Layers, Eye,
-  Zap, Key, Radio
+  Shield, ChevronLeft, ChevronRight, Maximize2, X, Play,
+  CheckCircle, Layers, Eye, Zap
 } from 'lucide-react';
 
 export default function Projects3DSection({ theme = 'emerald' }) {
@@ -17,182 +15,204 @@ export default function Projects3DSection({ theme = 'emerald' }) {
   const [isSimulating, setIsSimulating] = useState(false);
   const [viewMode, setViewMode] = useState('3d');
 
-  const threeRef = useRef({
+  const stateRef = useRef({
     scene: null,
     camera: null,
     renderer: null,
-    divisions: [],
-    targetRotation: 0,
-    currentRotation: 0,
+    cardMeshes: [],
+    activeIndex: 0,
+    mouseOffset: { x: 0, y: 0 },
+    dragStartX: 0,
     isDragging: false,
-    prevMouseX: 0
+    dragDelta: 0
   });
 
   const activeProject = projects[activeIndex];
 
-  // Hex colors based on hacker theme
+  // Theme color palette
   const getThemeColors = () => {
     switch (theme) {
       case 'cyan':
-        return { primary: '#00f0ff', primaryHex: 0x00f0ff, secondary: '#38bdf8', secondaryHex: 0x38bdf8 };
+        return { primary: '#00f0ff', primaryHex: 0x00f0ff, secondary: '#38bdf8', secondaryHex: 0x38bdf8, glowRgb: '0, 240, 255' };
       case 'crimson':
-        return { primary: '#ff0055', primaryHex: 0xff0055, secondary: '#fb7185', secondaryHex: 0xfb7185 };
+        return { primary: '#ff0055', primaryHex: 0xff0055, secondary: '#fb7185', secondaryHex: 0xfb7185, glowRgb: '255, 0, 85' };
       case 'amber':
-        return { primary: '#f59e0b', primaryHex: 0xf59e0b, secondary: '#fbbf24', secondaryHex: 0xfbbf24 };
+        return { primary: '#f59e0b', primaryHex: 0xf59e0b, secondary: '#fbbf24', secondaryHex: 0xfbbf24, glowRgb: '245, 158, 11' };
       case 'emerald':
       default:
-        return { primary: '#00ff66', primaryHex: 0x00ff66, secondary: '#00f0ff', secondaryHex: 0x00f0ff };
+        return { primary: '#00ff66', primaryHex: 0x00ff66, secondary: '#00f0ff', secondaryHex: 0x00f0ff, glowRgb: '0, 255, 102' };
     }
   };
 
-  // Build textures for the 3D project cards
+  // High-resolution Canvas Texture for crisp cyber project cards
   const createCardTexture = (proj, isCurrent) => {
     const canvas = document.createElement('canvas');
-    canvas.width = 1024;
-    canvas.height = 680;
+    canvas.width = 1600;
+    canvas.height = 1050;
     const ctx = canvas.getContext('2d');
     const colors = getThemeColors();
 
-    // Dark hacker panel background
-    const bgGrad = ctx.createLinearGradient(0, 0, 1024, 680);
-    bgGrad.addColorStop(0, '#040912');
-    bgGrad.addColorStop(0.5, '#020509');
-    bgGrad.addColorStop(1, '#010306');
+    // Dark cyber panel gradient background
+    const bgGrad = ctx.createLinearGradient(0, 0, 1600, 1050);
+    bgGrad.addColorStop(0, '#040913');
+    bgGrad.addColorStop(0.5, '#02050a');
+    bgGrad.addColorStop(1, '#010307');
     ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, 1024, 680);
+    ctx.fillRect(0, 0, 1600, 1050);
 
-    // Glowing border
-    ctx.strokeStyle = isCurrent ? colors.primary : 'rgba(0, 255, 102, 0.2)';
-    ctx.lineWidth = isCurrent ? 8 : 3;
-    ctx.strokeRect(16, 16, 992, 648);
+    // Subtle background cyber grid lines
+    ctx.strokeStyle = isCurrent ? `rgba(${colors.glowRgb}, 0.08)` : 'rgba(255, 255, 255, 0.03)';
+    ctx.lineWidth = 1;
+    for (let x = 60; x < 1600; x += 60) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, 1050);
+      ctx.stroke();
+    }
+    for (let y = 60; y < 1050; y += 60) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(1600, y);
+      ctx.stroke();
+    }
+
+    // Outer border
+    ctx.strokeStyle = isCurrent ? colors.primary : 'rgba(0, 255, 102, 0.25)';
+    ctx.lineWidth = isCurrent ? 10 : 4;
+    ctx.strokeRect(24, 24, 1552, 1002);
 
     // Cyber corner brackets
     ctx.fillStyle = colors.primary;
-    const notchSize = 32;
-    ctx.fillRect(16, 16, notchSize, 8);
-    ctx.fillRect(16, 16, 8, notchSize);
-    ctx.fillRect(1008 - notchSize, 16, notchSize, 8);
-    ctx.fillRect(1000, 16, 8, notchSize);
-    ctx.fillRect(16, 656, notchSize, 8);
-    ctx.fillRect(16, 640, 8, notchSize);
-    ctx.fillRect(1008 - notchSize, 656, notchSize, 8);
-    ctx.fillRect(1000, 640, 8, notchSize);
+    const notchSize = 48;
+    const notchThick = 12;
+    ctx.fillRect(24, 24, notchSize, notchThick);
+    ctx.fillRect(24, 24, notchThick, notchSize);
+    ctx.fillRect(1576 - notchSize, 24, notchSize, notchThick);
+    ctx.fillRect(1576 - notchThick, 24, notchThick, notchSize);
+    ctx.fillRect(24, 1026 - notchSize + notchThick, notchThick, notchSize);
+    ctx.fillRect(24, 1026, notchSize, notchThick);
+    ctx.fillRect(1576 - notchSize, 1026, notchSize, notchThick);
+    ctx.fillRect(1576 - notchThick, 1026 - notchSize + notchThick, notchThick, notchSize);
 
-    // Header bar
-    ctx.fillStyle = isCurrent ? 'rgba(0, 255, 102, 0.15)' : 'rgba(255, 255, 255, 0.04)';
-    ctx.fillRect(32, 32, 960, 80);
+    // Top Header Banner
+    ctx.fillStyle = isCurrent ? `rgba(${colors.glowRgb}, 0.18)` : 'rgba(255, 255, 255, 0.05)';
+    ctx.fillRect(48, 48, 1504, 110);
+    ctx.strokeStyle = isCurrent ? colors.primary : 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(48, 48, 1504, 110);
 
-    // Cyber Hex Stamp
-    ctx.strokeStyle = colors.primary;
-    ctx.lineWidth = 3;
-    ctx.strokeRect(930, 48, 48, 48);
+    // Badge and Category
     ctx.fillStyle = colors.primary;
-    ctx.font = 'bold 20px "Courier New", monospace';
-    ctx.fillText('0x', 940, 78);
+    ctx.font = 'bold 36px "Courier New", monospace';
+    ctx.fillText(`[MISSION POD // ${proj.badge}]`, 84, 115);
 
-    // Category & Badge
-    ctx.fillStyle = colors.primary;
-    ctx.font = 'bold 28px "Courier New", monospace';
-    ctx.fillText(`[CYBER_BLADE // ${proj.badge}]`, 56, 80);
-
-    ctx.fillStyle = '#64748b';
-    ctx.font = '22px "Courier New", monospace';
-    ctx.fillText(`TARGET: ${proj.codename}`, 540, 80);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = 'bold 30px "Courier New", monospace';
+    ctx.fillText(`TARGET: ${proj.codename}`, 900, 115);
 
     // Project Title
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 42px "Rajdhani", sans-serif';
+    ctx.font = 'bold 58px "Rajdhani", sans-serif';
     const words = proj.title.split(' ');
     let line = '';
-    let y = 175;
+    let y = 240;
     for (let n = 0; n < words.length; n++) {
       const testLine = line + words[n] + ' ';
-      const metrics = ctx.measureText(testLine);
-      if (metrics.width > 900 && n > 0) {
-        ctx.fillText(line, 56, y);
+      if (ctx.measureText(testLine).width > 1400 && n > 0) {
+        ctx.fillText(line, 84, y);
         line = words[n] + ' ';
-        y += 50;
+        y += 70;
       } else {
         line = testLine;
       }
     }
-    ctx.fillText(line, 56, y);
+    ctx.fillText(line, 84, y);
 
-    // Divider line
-    ctx.strokeStyle = 'rgba(0, 255, 102, 0.2)';
-    ctx.lineWidth = 2;
+    // Accent line
+    ctx.strokeStyle = isCurrent ? colors.primary : 'rgba(0, 255, 102, 0.3)';
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.moveTo(56, 250);
-    ctx.lineTo(968, 250);
+    ctx.moveTo(84, y + 35);
+    ctx.lineTo(1516, y + 35);
     ctx.stroke();
 
     // Short Description
     ctx.fillStyle = '#cbd5e1';
-    ctx.font = '26px sans-serif';
+    ctx.font = '36px sans-serif';
     const descWords = proj.shortDesc.split(' ');
     let descLine = '';
-    let descY = 300;
+    let descY = y + 95;
     for (let n = 0; n < descWords.length; n++) {
       const testLine = descLine + descWords[n] + ' ';
-      if (ctx.measureText(testLine).width > 900 && n > 0) {
-        ctx.fillText(descLine, 56, descY);
+      if (ctx.measureText(testLine).width > 1400 && n > 0) {
+        ctx.fillText(descLine, 84, descY);
         descLine = descWords[n] + ' ';
-        descY += 38;
+        descY += 52;
       } else {
         descLine = testLine;
       }
     }
-    ctx.fillText(descLine, 56, descY);
+    ctx.fillText(descLine, 84, descY);
 
-    // Architecture callout
-    ctx.fillStyle = 'rgba(6, 15, 25, 0.95)';
-    ctx.fillRect(56, 420, 912, 110);
-    ctx.strokeStyle = 'rgba(0, 255, 102, 0.25)';
-    ctx.strokeRect(56, 420, 912, 110);
+    // Security Architecture Box
+    const archBoxY = 620;
+    ctx.fillStyle = 'rgba(8, 20, 36, 0.9)';
+    ctx.fillRect(84, archBoxY, 1432, 160);
+    ctx.strokeStyle = isCurrent ? `rgba(${colors.glowRgb}, 0.5)` : 'rgba(255, 255, 255, 0.15)';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(84, archBoxY, 1432, 160);
 
     ctx.fillStyle = colors.primary;
-    ctx.font = 'bold 20px "Courier New", monospace';
-    ctx.fillText('SECURITY ARCHITECTURE BLUEPRINT:', 76, 455);
+    ctx.font = 'bold 26px "Courier New", monospace';
+    ctx.fillText('SECURITY ARCHITECTURE BLUEPRINT & TOPOLOGY:', 114, archBoxY + 50);
 
     ctx.fillStyle = '#e2e8f0';
-    ctx.font = '22px "Courier New", monospace';
-    ctx.fillText(proj.architecture.substring(0, 72) + '...', 76, 495);
+    ctx.font = '28px "Courier New", monospace';
+    const archSnippet = proj.architecture.length > 80 ? proj.architecture.substring(0, 80) + '...' : proj.architecture;
+    ctx.fillText(archSnippet, 114, archBoxY + 110);
 
-    // Tags at bottom
-    ctx.font = 'bold 22px "Courier New", monospace';
-    let tagX = 56;
-    proj.tags.slice(0, 3).forEach((tag) => {
-      const tagWidth = ctx.measureText(`[${tag}]`).width + 24;
+    // Technology Tags at bottom
+    ctx.font = 'bold 28px "Courier New", monospace';
+    let tagX = 84;
+    proj.tags.slice(0, 4).forEach((tag) => {
+      const tagText = `[${tag}]`;
+      const tagWidth = ctx.measureText(tagText).width + 36;
       ctx.fillStyle = 'rgba(0, 255, 102, 0.12)';
-      ctx.fillRect(tagX, 580, tagWidth, 42);
+      ctx.fillRect(tagX, 830, tagWidth, 54);
       ctx.strokeStyle = colors.primary;
-      ctx.strokeRect(tagX, 580, tagWidth, 42);
+      ctx.lineWidth = 2;
+      ctx.strokeRect(tagX, 830, tagWidth, 54);
       ctx.fillStyle = colors.primary;
-      ctx.fillText(`[${tag}]`, tagX + 12, 610);
-      tagX += tagWidth + 16;
+      ctx.fillText(tagText, tagX + 18, 868);
+      tagX += tagWidth + 24;
     });
 
-    // Interactive callout
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 24px "Courier New", monospace';
-    ctx.fillText('[ CLICK TO INSPECT DIVISION ]', 560, 610);
+    // Callout badge
+    ctx.fillStyle = isCurrent ? colors.primary : '#94a3b8';
+    ctx.font = 'bold 32px "Courier New", monospace';
+    ctx.fillText('[ CLICK TO INSPECT BLUEPRINT ]', 1020, 868);
 
-    return new THREE.CanvasTexture(canvas);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    return texture;
   };
 
-  // INITIALIZE 3D STAGE
+  // INITIALIZE 3D COVERFLOW STAGE
   useEffect(() => {
     if (viewMode !== '3d') return;
     const container = containerRef.current;
     if (!container) return;
 
     let width = container.clientWidth || 1000;
-    let height = container.clientHeight || 580;
+    let height = container.clientHeight || 600;
     const colors = getThemeColors();
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
-    camera.position.set(0, 1.2, 14);
+    scene.fog = new THREE.FogExp2(0x020408, 0.025);
+
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 100);
+    camera.position.set(0, 0.5, 13.5);
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -205,128 +225,141 @@ export default function Projects3DSection({ theme = 'emerald' }) {
     container.appendChild(renderer.domElement);
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.1);
     scene.add(ambientLight);
 
-    const mainLight = new THREE.PointLight(colors.primaryHex, 3.5, 30);
-    mainLight.position.set(0, 5, 10);
-    scene.add(mainLight);
+    const centerLight = new THREE.PointLight(colors.primaryHex, 3.5, 25);
+    centerLight.position.set(0, 3, 8);
+    scene.add(centerLight);
 
-    const floorLight = new THREE.PointLight(0x00f0ff, 2.0, 20);
-    floorLight.position.set(0, -6, 5);
-    scene.add(floorLight);
+    const fillLight = new THREE.PointLight(0x00f0ff, 1.8, 20);
+    fillLight.position.set(-6, -3, 6);
+    scene.add(fillLight);
 
-    // 3D Carousel Group
-    const carouselGroup = new THREE.Group();
-    scene.add(carouselGroup);
+    // Floor Pedestal Disc
+    const floorGeo = new THREE.CylinderGeometry(6, 6, 0.15, 48);
+    const floorMat = new THREE.MeshStandardMaterial({
+      color: 0x030812,
+      metalness: 0.9,
+      roughness: 0.2,
+      wireframe: false
+    });
+    const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+    floorMesh.position.set(0, -3.2, 0);
+    scene.add(floorMesh);
 
-    // Build 3D Project Divisions positioned on a cylindrical ring
-    const divisionRadius = 8.5;
-    const divisionMeshes = [];
+    const floorRingGeo = new THREE.RingGeometry(5.8, 6.0, 48);
+    const floorRingMat = new THREE.MeshBasicMaterial({
+      color: colors.primaryHex,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.7
+    });
+    const floorRing = new THREE.Mesh(floorRingGeo, floorRingMat);
+    floorRing.rotation.x = Math.PI / 2;
+    floorRing.position.set(0, -3.12, 0);
+    scene.add(floorRing);
 
-    projects.forEach((proj, i) => {
-      const divisionGroup = new THREE.Group();
+    // Create 3D Project Cards Group
+    const stageGroup = new THREE.Group();
+    scene.add(stageGroup);
 
-      const cardGeo = new THREE.BoxGeometry(6.4, 4.25, 0.2);
-      const texture = createCardTexture(proj, i === activeIndex);
+    const cardMeshes = [];
+
+    projects.forEach((proj, idx) => {
+      const cardGroup = new THREE.Group();
+      const isCur = idx === activeIndex;
+
+      // Card Box Geometry
+      const cardGeo = new THREE.BoxGeometry(6.6, 4.35, 0.18);
+      const texture = createCardTexture(proj, isCur);
 
       const materials = [
-        new THREE.MeshStandardMaterial({ color: 0x050c18, metalness: 0.9, roughness: 0.15 }),
-        new THREE.MeshStandardMaterial({ color: 0x050c18, metalness: 0.9, roughness: 0.15 }),
-        new THREE.MeshStandardMaterial({ color: 0x050c18, metalness: 0.9, roughness: 0.15 }),
-        new THREE.MeshStandardMaterial({ color: 0x050c18, metalness: 0.9, roughness: 0.15 }),
-        new THREE.MeshBasicMaterial({ map: texture }),
-        new THREE.MeshStandardMaterial({ color: 0x02050a, metalness: 0.95, roughness: 0.1 })
+        new THREE.MeshStandardMaterial({ color: 0x030710, metalness: 0.9, roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ color: 0x030710, metalness: 0.9, roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ color: 0x030710, metalness: 0.9, roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ color: 0x030710, metalness: 0.9, roughness: 0.2 }),
+        new THREE.MeshBasicMaterial({ map: texture }), // Front face
+        new THREE.MeshStandardMaterial({ color: 0x020409, metalness: 0.95, roughness: 0.1 })
       ];
 
-      const cardMesh = new THREE.Mesh(cardGeo, materials);
-      divisionGroup.add(cardMesh);
+      const mesh = new THREE.Mesh(cardGeo, materials);
+      cardGroup.add(mesh);
 
-      const borderGeo = new THREE.WireframeGeometry(cardGeo);
-      const borderMat = new THREE.LineBasicMaterial({
-        color: i === activeIndex ? colors.primaryHex : 0x1e3a2b,
+      // Glowing Neon Wireframe Outline
+      const wireGeo = new THREE.WireframeGeometry(cardGeo);
+      const wireMat = new THREE.LineBasicMaterial({
+        color: isCur ? colors.primaryHex : 0x1e3a2b,
         transparent: true,
-        opacity: i === activeIndex ? 0.9 : 0.4
+        opacity: isCur ? 0.95 : 0.35
       });
-      const borderLines = new THREE.LineSegments(borderGeo, borderMat);
-      divisionGroup.add(borderLines);
+      const wireMesh = new THREE.LineSegments(wireGeo, wireMat);
+      cardGroup.add(wireMesh);
 
-      // 3D Holographic Quantum Core on top of division
-      const holoGeo = new THREE.IcosahedronGeometry(0.5, 1);
-      const holoMat = new THREE.MeshBasicMaterial({
+      // Laser Scanner Line (only on card)
+      const laserGeo = new THREE.PlaneGeometry(6.5, 0.06);
+      const laserMat = new THREE.MeshBasicMaterial({
         color: colors.primaryHex,
-        wireframe: true,
         transparent: true,
-        opacity: 0.85
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending
       });
-      const holoMesh = new THREE.Mesh(holoGeo, holoMat);
-      holoMesh.position.set(0, 2.7, 0);
-      divisionGroup.add(holoMesh);
+      const laserMesh = new THREE.Mesh(laserGeo, laserMat);
+      laserMesh.position.set(0, 0, 0.11);
+      laserMesh.visible = isCur;
+      cardGroup.add(laserMesh);
 
-      // Position on cylindrical ring
-      const angle = (i / projects.length) * Math.PI * 2;
-      divisionGroup.position.x = Math.sin(angle) * divisionRadius;
-      divisionGroup.position.z = Math.cos(angle) * divisionRadius - divisionRadius;
-      divisionGroup.rotation.y = angle;
-
-      divisionGroup.userData = {
-        index: i,
+      cardGroup.userData = {
+        index: idx,
         project: proj,
-        holoMesh,
-        borderLines,
         materials,
-        angle
+        wireMat,
+        laserMesh,
+        targetPos: new THREE.Vector3(0, 0, 0),
+        targetRotY: 0,
+        targetScale: 1.0
       };
 
-      carouselGroup.add(divisionGroup);
-      divisionMeshes.push(divisionGroup);
+      stageGroup.add(cardGroup);
+      cardMeshes.push(cardGroup);
     });
 
-    // 3D Cyber Floor Pedestal Ring
-    const floorPedestalGeo = new THREE.RingGeometry(divisionRadius - 1.5, divisionRadius + 1.5, 64);
-    const floorPedestalMat = new THREE.MeshBasicMaterial({
-      color: colors.primaryHex,
-      transparent: true,
-      opacity: 0.18,
-      side: THREE.DoubleSide
-    });
-    const floorPedestal = new THREE.Mesh(floorPedestalGeo, floorPedestalMat);
-    floorPedestal.rotation.x = Math.PI / 2;
-    floorPedestal.position.y = -2.5;
-    scene.add(floorPedestal);
-
-    threeRef.current = {
+    stateRef.current = {
       scene,
       camera,
       renderer,
-      divisions: divisionMeshes,
-      carouselGroup,
-      targetRotation: -(activeIndex / projects.length) * Math.PI * 2,
-      currentRotation: -(activeIndex / projects.length) * Math.PI * 2,
+      cardMeshes,
+      activeIndex,
+      stageGroup,
+      mouseOffset: { x: 0, y: 0 },
+      dragStartX: 0,
       isDragging: false,
-      prevMouseX: 0
+      dragDelta: 0
     };
 
-    // RAYCASTING FOR INTERACTION
+    // RAYCASTING CLICK HANDLER
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     const handleCanvasClick = (e) => {
+      // Ignore if user was dragging
+      if (Math.abs(stateRef.current.dragDelta) > 10) return;
+
       const rect = renderer.domElement.getBoundingClientRect();
       mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
 
       raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(carouselGroup.children, true);
+      const intersects = raycaster.intersectObjects(stageGroup.children, true);
 
       if (intersects.length > 0) {
         let hit = intersects[0].object;
-        while (hit.parent && hit.parent !== carouselGroup) {
+        while (hit.parent && hit.parent !== stageGroup) {
           hit = hit.parent;
         }
         if (hit.userData && typeof hit.userData.index === 'number') {
           const clickedIdx = hit.userData.index;
-          if (clickedIdx === activeIndex) {
+          if (clickedIdx === stateRef.current.activeIndex) {
             sounds.playBeep(1200, 0.1);
             setSelectedProject(projects[clickedIdx]);
           } else {
@@ -339,33 +372,52 @@ export default function Projects3DSection({ theme = 'emerald' }) {
 
     renderer.domElement.addEventListener('click', handleCanvasClick);
 
-    // MOUSE DRAG CAROUSEL ROTATION
-    const handleMouseDown = (e) => {
-      threeRef.current.isDragging = true;
-      threeRef.current.prevMouseX = e.clientX;
+    // MOUSE & TOUCH DRAG CONTROLS
+    const handlePointerDown = (e) => {
+      stateRef.current.isDragging = true;
+      stateRef.current.dragStartX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      stateRef.current.dragDelta = 0;
     };
 
-    const handleMouseMove = (e) => {
-      if (!threeRef.current.isDragging) return;
-      const deltaX = e.clientX - threeRef.current.prevMouseX;
-      threeRef.current.targetRotation += deltaX * 0.005;
-      threeRef.current.prevMouseX = e.clientX;
+    const handlePointerMove = (e) => {
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+
+      // Mouse Parallax
+      const rect = renderer.domElement.getBoundingClientRect();
+      stateRef.current.mouseOffset.x = ((clientX - rect.left) / rect.width - 0.5) * 2;
+      stateRef.current.mouseOffset.y = ((clientY - rect.top) / rect.height - 0.5) * 2;
+
+      if (!stateRef.current.isDragging) return;
+      stateRef.current.dragDelta = clientX - stateRef.current.dragStartX;
     };
 
-    const handleMouseUp = () => {
-      if (!threeRef.current.isDragging) return;
-      threeRef.current.isDragging = false;
-      const step = (Math.PI * 2) / projects.length;
-      const normalized = -threeRef.current.targetRotation / step;
-      let nearest = Math.round(normalized) % projects.length;
-      if (nearest < 0) nearest += projects.length;
-      setActiveIndex(nearest);
+    const handlePointerUp = () => {
+      if (!stateRef.current.isDragging) return;
+      stateRef.current.isDragging = false;
+
+      const delta = stateRef.current.dragDelta;
+      if (Math.abs(delta) > 40) {
+        if (delta > 0) {
+          sounds.playDivisionSwitch();
+          setActiveIndex((prev) => (prev - 1 + projects.length) % projects.length);
+        } else {
+          sounds.playDivisionSwitch();
+          setActiveIndex((prev) => (prev + 1) % projects.length);
+        }
+      }
+      stateRef.current.dragDelta = 0;
     };
 
-    renderer.domElement.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    renderer.domElement.addEventListener('mousedown', handlePointerDown);
+    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('mouseup', handlePointerUp);
 
+    renderer.domElement.addEventListener('touchstart', handlePointerDown, { passive: true });
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+    window.addEventListener('touchend', handlePointerUp);
+
+    // RESIZE
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
@@ -376,6 +428,7 @@ export default function Projects3DSection({ theme = 'emerald' }) {
     };
     window.addEventListener('resize', handleResize);
 
+    // ANIMATION LOOP
     let animId;
     const clock = new THREE.Clock();
 
@@ -384,14 +437,70 @@ export default function Projects3DSection({ theme = 'emerald' }) {
       if (document.hidden) return;
 
       const elapsed = clock.getElapsedTime();
+      const curIdx = stateRef.current.activeIndex;
 
-      threeRef.current.currentRotation +=
-        (threeRef.current.targetRotation - threeRef.current.currentRotation) * 0.08;
-      carouselGroup.rotation.y = threeRef.current.currentRotation;
+      // Pulse Floor Ring
+      floorRingMat.opacity = 0.45 + Math.sin(elapsed * 2.5) * 0.25;
 
-      divisionMeshes.forEach((div, i) => {
-        div.userData.holoMesh.rotation.y = elapsed * 1.5;
-        div.userData.holoMesh.rotation.x = Math.sin(elapsed * 2 + i) * 0.4;
+      // Compute CoverFlow Slot Positions for all cards
+      cardMeshes.forEach((cardGroup, idx) => {
+        let offset = idx - curIdx;
+        const total = projects.length;
+        // Wrap to closest signed distance
+        while (offset > total / 2) offset -= total;
+        while (offset < -total / 2) offset += total;
+
+        let targetX = 0;
+        let targetZ = 0;
+        let targetRotY = 0;
+        let targetScale = 1.0;
+
+        if (offset === 0) {
+          // ACTIVE CENTER CARD
+          targetX = 0;
+          targetZ = 0.8;
+          targetRotY = stateRef.current.mouseOffset.x * 0.08;
+          targetScale = 1.0;
+          cardGroup.visible = true;
+        } else if (offset === -1) {
+          // IMMEDIATE LEFT
+          targetX = -4.8;
+          targetZ = -2.2;
+          targetRotY = 0.48;
+          targetScale = 0.84;
+          cardGroup.visible = true;
+        } else if (offset === 1) {
+          // IMMEDIATE RIGHT
+          targetX = 4.8;
+          targetZ = -2.2;
+          targetRotY = -0.48;
+          targetScale = 0.84;
+          cardGroup.visible = true;
+        } else {
+          // OUTER SLOTS
+          const sign = Math.sign(offset);
+          targetX = sign * 9.0;
+          targetZ = -5.0;
+          targetRotY = -sign * 0.75;
+          targetScale = 0.65;
+          cardGroup.visible = Math.abs(offset) <= 2;
+        }
+
+        // Smooth Lerp Position & Rotation
+        cardGroup.position.x += (targetX - cardGroup.position.x) * 0.12;
+        cardGroup.position.y += (0 - cardGroup.position.y) * 0.12;
+        cardGroup.position.z += (targetZ - cardGroup.position.z) * 0.12;
+        cardGroup.rotation.y += (targetRotY - cardGroup.rotation.y) * 0.12;
+        cardGroup.rotation.x += (-stateRef.current.mouseOffset.y * 0.05 - cardGroup.rotation.x) * 0.12;
+
+        const curScale = cardGroup.scale.x;
+        const nextScale = curScale + (targetScale - curScale) * 0.12;
+        cardGroup.scale.set(nextScale, nextScale, nextScale);
+
+        // Animate Laser Scanner on Active Card
+        if (offset === 0 && cardGroup.userData.laserMesh) {
+          cardGroup.userData.laserMesh.position.y = Math.sin(elapsed * 2.5) * 1.8;
+        }
       });
 
       renderer.render(scene, camera);
@@ -402,9 +511,12 @@ export default function Projects3DSection({ theme = 'emerald' }) {
     return () => {
       cancelAnimationFrame(animId);
       renderer.domElement.removeEventListener('click', handleCanvasClick);
-      renderer.domElement.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      renderer.domElement.removeEventListener('mousedown', handlePointerDown);
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('mouseup', handlePointerUp);
+      renderer.domElement.removeEventListener('touchstart', handlePointerDown);
+      window.removeEventListener('touchmove', handlePointerMove);
+      window.removeEventListener('touchend', handlePointerUp);
       window.removeEventListener('resize', handleResize);
       if (container && renderer.domElement) {
         container.innerHTML = '';
@@ -413,20 +525,23 @@ export default function Projects3DSection({ theme = 'emerald' }) {
     };
   }, [viewMode, theme]);
 
-  // Update target rotation when activeIndex changes
+  // Update active index reference & textures when activeIndex changes
   useEffect(() => {
-    if (threeRef.current && threeRef.current.carouselGroup) {
-      const target = -(activeIndex / projects.length) * Math.PI * 2;
-      threeRef.current.targetRotation = target;
+    stateRef.current.activeIndex = activeIndex;
+    const colors = getThemeColors();
 
-      threeRef.current.divisions.forEach((div, i) => {
+    if (stateRef.current.cardMeshes) {
+      stateRef.current.cardMeshes.forEach((cardGroup, i) => {
         const isCur = i === activeIndex;
-        div.userData.borderLines.material.color.setHex(
-          isCur ? getThemeColors().primaryHex : 0x1e3a2b
-        );
-        div.userData.borderLines.material.opacity = isCur ? 0.9 : 0.4;
-        div.userData.materials[4].map = createCardTexture(div.userData.project, isCur);
-        div.userData.materials[4].needsUpdate = true;
+        cardGroup.userData.wireMat.color.setHex(isCur ? colors.primaryHex : 0x1e3a2b);
+        cardGroup.userData.wireMat.opacity = isCur ? 0.95 : 0.35;
+        if (cardGroup.userData.laserMesh) {
+          cardGroup.userData.laserMesh.visible = isCur;
+        }
+        // Update front face texture
+        const updatedTex = createCardTexture(cardGroup.userData.project, isCur);
+        cardGroup.userData.materials[4].map = updatedTex;
+        cardGroup.userData.materials[4].needsUpdate = true;
       });
     }
   }, [activeIndex, theme]);
@@ -471,13 +586,13 @@ export default function Projects3DSection({ theme = 'emerald' }) {
         <div>
           <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-widest mb-2">
             <Zap className="w-4 h-4 animate-pulse text-emerald-400" />
-            <span>Cyber Armory // 3D Interactive Divisions</span>
+            <span>Cyber Armory // 3D Interactive HoloDeck</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-bold font-tactical text-white tracking-wide">
             CLASSIFIED CYBER PROJECTS
           </h2>
           <p className="text-gray-400 text-sm sm:text-base mt-1 font-mono max-w-2xl">
-            Each project is rendered within a dedicated 3D interactive division. Rotate, inspect, and execute simulated incident response playbooks.
+            Each project is rendered within a dedicated 3D interactive holographic division. Rotate, inspect, and execute simulated incident response playbooks.
           </p>
         </div>
 
@@ -518,23 +633,23 @@ export default function Projects3DSection({ theme = 'emerald' }) {
       {/* 3D DIVISION STAGE */}
       {viewMode === '3d' ? (
         <div className="relative">
-          <div className="relative w-full h-[580px] bg-slate-950/90 rounded-xl border border-emerald-500/40 glow-green overflow-hidden backdrop-blur-md shadow-2xl">
+          <div className="relative w-full h-[600px] bg-slate-950/90 rounded-xl border border-emerald-500/40 glow-green overflow-hidden backdrop-blur-md shadow-2xl">
             {/* Tactical HUD Header */}
             <div className="absolute top-0 inset-x-0 h-10 bg-slate-950/95 border-b border-emerald-500/20 px-4 flex items-center justify-between text-xs font-mono text-gray-400 z-10 pointer-events-none">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-emerald-400 font-bold">CYBER 3D STAGE</span>
+                <span className="text-emerald-400 font-bold">CYBER 3D HOLODECK</span>
                 <span>// DIVISION {activeIndex + 1} OF {projects.length}</span>
               </div>
               <div className="hidden sm:flex items-center gap-4 text-gray-400">
-                <span>DRAG TO ROTATE 3D CAROUSEL</span>
-                <span>CLICK CARD TO EXPAND</span>
+                <span>DRAG OR CLICK ADJACENT CARD TO ROTATE</span>
+                <span>CLICK CENTER CARD TO EXPAND</span>
               </div>
             </div>
 
             <div
               ref={containerRef}
-              className="w-full h-full cursor-grab active:cursor-grabbing"
+              className="w-full h-full cursor-grab active:cursor-grabbing select-none"
               tabIndex={0}
               role="region"
               aria-label="3D Interactive Project Stage"
@@ -562,10 +677,10 @@ export default function Projects3DSection({ theme = 'emerald' }) {
                     sounds.playBeep(1200, 0.1);
                     setSelectedProject(activeProject);
                   }}
-                  className="flex items-center gap-2 px-4 py-2 rounded bg-emerald-500 text-slate-950 font-tactical font-bold text-sm hover:bg-emerald-400 transition glow-green"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded bg-emerald-500 text-slate-950 font-tactical font-bold text-sm hover:bg-emerald-400 transition glow-green hover:scale-105"
                 >
                   <Eye className="w-4 h-4" />
-                  <span>Inspect Division</span>
+                  <span>Inspect Blueprint & Playbook</span>
                 </button>
               </div>
             </div>
@@ -580,9 +695,9 @@ export default function Projects3DSection({ theme = 'emerald' }) {
                   sounds.playDivisionSwitch();
                   setActiveIndex(idx);
                 }}
-                className={`px-3 py-1.5 rounded-full text-xs font-mono transition flex items-center gap-2 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-mono transition flex items-center gap-2 ${
                   activeIndex === idx
-                    ? 'bg-emerald-500 text-slate-950 font-bold glow-green border border-emerald-300'
+                    ? 'bg-emerald-500 text-slate-950 font-bold glow-green border border-emerald-300 scale-105'
                     : 'bg-slate-950/80 text-gray-400 border border-slate-800 hover:border-emerald-500/40 hover:text-emerald-300'
                 }`}
               >
@@ -646,7 +761,16 @@ export default function Projects3DSection({ theme = 'emerald' }) {
 
       {/* FULL-SCREEN 3D DIVISION DEEP-DIVE MODAL */}
       {selectedProject && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn">
+        <div
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              sounds.playBeep(700, 0.05);
+              setSelectedProject(null);
+              setSimulatedLog('');
+            }
+          }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fadeIn"
+        >
           <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-xl bg-slate-950 border border-emerald-500/60 glow-green-lg p-6 sm:p-8">
             <button
               onClick={() => {

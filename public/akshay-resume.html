@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D R Akshay - IT Support & Security Engineer - Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #115e59;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --bg-subtle: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background-color: #f1f5f9;
+      line-height: 1.5;
+      padding: 24px;
+    }
+
+    .no-print-bar {
+      max-width: 850px;
+      margin: 0 auto 16px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f172a;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    .btn {
+      background: #00ff66;
+      color: #020408;
+      font-weight: 700;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      background: #10b981;
+      transform: translateY(-1px);
+    }
+
+    .resume-container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    header {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 18px;
+      margin-bottom: 20px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+    }
+
+    .tagline {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    .contacts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .contacts a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .contacts a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary-dark);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .summary-text {
+      font-size: 13px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .job {
+      margin-bottom: 14px;
+    }
+
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3px;
+    }
+
+    .job-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .job-company {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .job-date {
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted);
+    }
+
+    .job-summary {
+      font-size: 12.5px;
+      color: #475569;
+      margin-bottom: 6px;
+      font-style: italic;
+    }
+
+    ul.bullet-list {
+      padding-left: 18px;
+      font-size: 12.5px;
+      color: #334155;
+      line-height: 1.55;
+    }
+
+    ul.bullet-list li {
+      margin-bottom: 4px;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .skill-category {
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+
+    .skill-cat-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .skill-items {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .project-item {
+      margin-bottom: 8px;
+    }
+
+    .proj-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .proj-desc {
+      font-size: 12px;
+      color: #475569;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .no-print-bar {
+        display: none !important;
+      }
+
+      .resume-container {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      @page {
+        margin: 1.2cm;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="no-print-bar">
+    <div>
+      <span>OFFICIAL RESUME // D R AKSHAY</span>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="btn" onclick="window.print()">
+        🖨️ Print / Save as PDF
+      </button>
+      <button class="btn" style="background:#0f172a; color:#fff; border:1px solid #334155;" onclick="window.close()">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <div class="resume-container">
+    <header>
+      <div class="header-top">
+        <div>
+          <h1>D R AKSHAY</h1>
+          <div class="tagline">IT Support & Security Engineer</div>
+        </div>
+      </div>
+      <div class="contacts">
+        <span>📍 Kochi, Kerala, India</span>
+        <span>✉️ <a href="mailto:dr.akxhay@gmail.com">dr.akxhay@gmail.com</a></span>
+        <span>📞 <a href="tel:+919778585563">+91 9778585563</a></span>
+        <span>🔗 <a href="https://www.linkedin.com/in/drakshay" target="_blank">linkedin.com/in/drakshay</a></span>
+        <span>🐙 <a href="https://github.com/drakshay" target="_blank">github.com/drakshay</a></span>
+      </div>
+    </header>
+
+    <section>
+      <h2>Executive Summary</h2>
+      <p class="summary-text">
+        Security & IT Support Engineer with hands-on experience supporting enterprise infrastructure across 1,000+ branches pan-India. Practical exposure to endpoint security, EDR/XDR (K7, Seqrite, Sophos), Active Directory, Fortinet firewalls, IPsec VPNs, network security, and incident response. Experienced in investigating security alerts, malware incidents, analyzing endpoint/log telemetry, performing containment and remediation, and safeguarding distributed enterprise environments.
+      </p>
+    </section>
+
+    <section>
+      <h2>Enterprise Experience</h2>
+      <div class="job">
+        <div class="job-header">
+          <div>
+            <span class="job-title">IT Support Engineer</span> — 
+            <span class="job-company">Muthoot Mcred Limited</span>
+          </div>
+          <span class="job-date">March 2026 – Present | Kochi, Kerala</span>
+        </div>
+        <div class="job-summary">
+          Centralized enterprise IT operations supporting 1,000+ pan-India branches and 3,500+ endpoints.
+        </div>
+        <ul class="bullet-list">
+          <li><strong>Enterprise Scale:</strong> Support IT infrastructure across 1,000+ branches pan-India, ensuring continuous operation of branch endpoints, firewalls, and network appliances.</li>
+          <li><strong>EDR/XDR Administration:</strong> Administer and troubleshoot K7 Security, Seqrite Endpoint, and Sophos XDR; investigate security alerts, malware outbreaks, agent health, and rule updates.</li>
+          <li><strong>Incident Containment & Remediation:</strong> Rapidly isolate compromised endpoints, analyze telemetry logs and threat behaviors, neutralize malware, rescan systems, and verify remediation.</li>
+          <li><strong>Network & Firewall Operations:</strong> Troubleshoot Fortinet firewalls and IPsec VPN tunnels, inspect traffic logs, and resolve branch WAN/LAN connectivity degradation.</li>
+          <li><strong>Active Directory & Identity:</strong> Administer AD & Group Policy (GPO), managing OUs, user/computer accounts, access controls, credential security, and automated onboarding/offboarding.</li>
+          <li><strong>Infrastructure Health:</strong> Troubleshoot TCP/IP, DHCP, DNS, LAN switches, and routers; execute server data backups and system health monitoring.</li>
+        </ul>
+      </div>
+
+      <div class="job" style="margin-top: 14px;">
+        <div class="job-header">
+          <div>
+            <span class="job-title">IT Support Executive</span> — 
+            <span class="job-company">Maijo Moto – Maruti Suzuki Arena</span>
+          </div>
+          <span class="job-date">March 2025 – Present | Kochi, Kerala</span>
+        </div>
+        <div class="job-summary">
+          Primary IT point of contact across 8 branches managing 300+ end-user devices.
+        </div>
+        <ul class="bullet-list">
+          <li>Sole IT point of contact across 8 branches managing 300+ end-user devices, printers, biometric attendance, and CCTV network.</li>
+          <li>Resolved complex LAN bottlenecks, IP address conflicts, DNS failures, gateway routing errors, and VPN connectivity hiccups.</li>
+          <li>Delivered rapid remote desktop support via AnyDesk and UltraViewer for mission-critical showroom and workshop systems.</li>
+          <li>Managed Active Directory user lifecycles, password governance, onboarding/offboarding workflows, and IT hardware asset registers.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Core Technical Competencies</h2>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <div class="skill-cat-title">IT Support & Fleet Operations</div>
+          <div class="skill-items">
+            1,000+ Branch Support, End-User Troubleshooting, AnyDesk / UltraViewer Remote Ops, Windows 10/11 Pro Deployment, Hardware & Peripherals, IT Asset Lifecycle.
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-title">Cyber Defense & Incident Triage</div>
+          <div class="skill-items">
+            Sophos XDR, Seqrite Endpoint, K7 Security, Host Quarantine & Containment, Malware Forensics, Log Telemetry Analysis, Splunk SIEM Lab, Burp Suite, Nmap, Wireshark.
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-title">Network & Identity Security</div>
+          <div class="skill-items">
+            Fortinet FortiGate Firewalls, IPsec Site-to-Site VPN (IKEv2 AES-256), Active Directory Domain Services (AD DS), Group Policy (GPO), TCP/IP, DNS, DHCP, VLANs.
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-cat-title">Linux, Systems & Automation</div>
+          <div class="skill-items">
+            Linux CLI (Ubuntu, CentOS, Kali), Bash Automation Scripting, Docker Containerization, Caddy & Nginx Reverse Proxy, AWS Cloud Fundamentals, Backup Telemetry.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Featured Security Projects & Labs</h2>
+      <div class="project-item">
+        <span class="proj-title">Splunk SIEM Incident Response Lab (BATCAVE-TELEMETRY-OMEGA):</span>
+        <span class="proj-desc">Ingested Windows Server & Linux telemetry, designed brute-force (Event ID 4625) alert correlations and automated host containment.</span>
+      </div>
+      <div class="project-item">
+        <span class="proj-title">Fortinet IPsec VPN Multi-Branch Mesh (GOTHAM-SHIELD-FORTINET):</span>
+        <span class="proj-desc">Engineered hub-and-spoke AES-256 IKEv2 encrypted VPN architecture with centralized firewall security policies and failover routing.</span>
+      </div>
+      <div class="project-item">
+        <span class="proj-title">Active Directory & GPO Hardening Suite (WAYNE-CORP-IDENTITY-DEFENSE):</span>
+        <span class="proj-desc">PowerShell automated auditing, Tiered Admin Model enforcement, CIS Benchmark GPO lockdown, and LAPS deployment.</span>
+      </div>
+      <div class="project-item">
+        <span class="proj-title">EDR/XDR Threat Containment & Sandbox Rig (DARK-KNIGHT-QUARANTINE):</span>
+        <span class="proj-desc">MITRE ATT&CK technique simulations, behavioral indicators analysis, and sub-second network quarantine validation.</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      <div class="job-header">
+        <div>
+          <span class="job-title">Bachelor of Computer Applications (BCA)</span> — 
+          <span class="job-company">Acharya's Bangalore Business School (Bangalore University)</span>
+        </div>
+        <span class="job-date">2021 – 2024 | Bangalore, Karnataka</span>
+      </div>
+      <p class="proj-desc" style="margin-top: 2px;">
+        Core coursework: Computer Networks (TCP/IP), Operating Systems Internals (Windows & Linux), Database Management Systems, System Administration.
+      </p>
+    </section>
+  </div>
+</body>
+</html>

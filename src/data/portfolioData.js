@@ -2,6 +2,7 @@
 
 export const personalInfo = {
   name: "D R AKSHAY",
+  avatar: "/akshay-profile.jpg",
   title: "IT Support & Security Engineer",
   subtitle: "Windows & Linux Infrastructure Specialist // Cyber Defense Operations",
   location: "Kochi, Kerala, India",
@@ -170,14 +171,14 @@ export const skillsData = {
       icon: "Server",
       description: "Enterprise user & endpoint lifecycle operations across 1000+ branches",
       skills: [
-        { name: "End-User Enterprise Support", level: 95 },
-        { name: "LAN & Network Troubleshooting", level: 92 },
-        { name: "VPN Connectivity & Gateways", level: 90 },
-        { name: "Remote Support (AnyDesk / UltraViewer)", level: 96 },
-        { name: "Windows OS Installation & Diagnostics", level: 95 },
-        { name: "Active Directory Account Management", level: 90 },
-        { name: "Hardware, Printers & Peripheral Support", level: 92 },
-        { name: "IT Asset Inventory & Lifecycle", level: 88 }
+        { name: "End-User Enterprise Support", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "1,000+ Branches", badge: "TIER 2/3" },
+        { name: "LAN & Network Troubleshooting", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "WAN / LAN Meshes", badge: "ENTERPRISE" },
+        { name: "VPN Connectivity & Gateways", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "IPsec & SSL VPN", badge: "HIGH UPTIME" },
+        { name: "Remote Support (AnyDesk / UltraViewer)", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "Rapid Incident Dispatch", badge: "SLA 99.9%" },
+        { name: "Windows OS Installation & Diagnostics", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "Fleet Deployment", badge: "SYS_HARDENED" },
+        { name: "Active Directory Account Management", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Domain Services & OUs", badge: "IAM" },
+        { name: "Hardware, Printers & Peripheral Support", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "Multi-vendor Hardware", badge: "HARDWARE" },
+        { name: "IT Asset Inventory & Lifecycle", tier: "PRACTITIONER", status: "OPERATIONAL", scope: "Asset Registers & Audit", badge: "GOVERNANCE" }
       ]
     },
     {
@@ -186,14 +187,14 @@ export const skillsData = {
       icon: "ShieldAlert",
       description: "Threat detection, EDR/XDR investigation, log forensics, and containment",
       skills: [
-        { name: "Endpoint Security (K7, Seqrite)", level: 94 },
-        { name: "EDR/XDR Telemetry (K7, Sophos XDR)", level: 92 },
-        { name: "Malware Investigation & Containment", level: 88 },
-        { name: "Security Alerts & Incident Triage", level: 90 },
-        { name: "Log Analysis (Splunk Home Lab)", level: 85 },
-        { name: "Burp Suite & HTTP Request Analysis", level: 80 },
-        { name: "Network Recon (Nmap, Wireshark)", level: 85 },
-        { name: "OSINT Intelligence Gathering", level: 82 }
+        { name: "Endpoint Security (K7, Seqrite)", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "3,500+ Endpoints", badge: "EDR FLEET" },
+        { name: "EDR/XDR Telemetry (K7, Sophos XDR)", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Live Telemetry Analysis", badge: "THREAT_HUNT" },
+        { name: "Malware Investigation & Containment", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Rapid Host Isolation", badge: "INCIDENT_OPS" },
+        { name: "Security Alerts & Incident Triage", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Zero-Day & Threat Response", badge: "SOC TRIAGE" },
+        { name: "Log Analysis (Splunk Home Lab)", tier: "PRACTITIONER", status: "FIELD TESTED", scope: "Windows & Linux Eventlogs", badge: "SIEM" },
+        { name: "Burp Suite & HTTP Request Analysis", tier: "PRACTITIONER", status: "FIELD TESTED", scope: "Traffic Interception", badge: "APPSEC" },
+        { name: "Network Recon (Nmap, Wireshark)", tier: "SPECIALIST", status: "FIELD TESTED", scope: "Deep Packet Inspection", badge: "NET_RECON" },
+        { name: "OSINT Intelligence Gathering", tier: "PRACTITIONER", status: "OPERATIONAL", scope: "Target Surface Mapping", badge: "INTEL" }
       ]
     },
     {
@@ -202,14 +203,14 @@ export const skillsData = {
       icon: "Lock",
       description: "Enterprise firewalls, site-to-site VPNs, and identity governance",
       skills: [
-        { name: "Fortinet Firewalls & Policies", level: 88 },
-        { name: "Firewall Log Analysis", level: 90 },
-        { name: "IPsec Site-to-Site VPN Tunnels", level: 86 },
-        { name: "Active Directory Domain Services", level: 92 },
-        { name: "Group Policy Objects (GPO)", level: 88 },
-        { name: "TCP/IP, DNS, DHCP Routing", level: 94 },
-        { name: "Switches & Routers Troubleshooting", level: 86 },
-        { name: "Access & Authentication Testing", level: 84 }
+        { name: "Fortinet Firewalls & Policies", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "FortiGate Rule Enforcement", badge: "FIREWALL" },
+        { name: "Firewall Log Analysis", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Traffic & Threat Auditing", badge: "LOG_FORENSICS" },
+        { name: "IPsec Site-to-Site VPN Tunnels", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "IKEv2 AES-256 Mesh", badge: "CRYPTO_VPN" },
+        { name: "Active Directory Domain Services", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "Enterprise Forests & OUs", badge: "AD_DS" },
+        { name: "Group Policy Objects (GPO)", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Centralized Policy Lock", badge: "HARDENING" },
+        { name: "TCP/IP, DNS, DHCP Routing", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "Enterprise Subnets & VLANs", badge: "NET_CORE" },
+        { name: "Switches & Routers Troubleshooting", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "L2/L3 Infrastructure", badge: "SWITCHING" },
+        { name: "Access & Authentication Testing", tier: "PRACTITIONER", status: "OPERATIONAL", scope: "Credential & ACL Auditing", badge: "AUTH_SEC" }
       ]
     },
     {
@@ -218,14 +219,14 @@ export const skillsData = {
       icon: "Terminal",
       description: "CLI administration, server hardening, containers, and scripting",
       skills: [
-        { name: "Linux CLI (Ubuntu, CentOS, Kali)", level: 90 },
-        { name: "System Monitoring & Disk Checks", level: 92 },
-        { name: "User/Group & File Permissions", level: 90 },
-        { name: "Bash Automation Scripting", level: 84 },
-        { name: "Docker Containerization", level: 80 },
-        { name: "Web Servers (Caddy, Nginx, Apache)", level: 84 },
-        { name: "AWS Cloud Fundamentals", level: 78 },
-        { name: "Server Backup & Health Telemetry", level: 88 }
+        { name: "Linux CLI (Ubuntu, CentOS, Kali)", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "POSIX Systems & Shells", badge: "BASH_CORE" },
+        { name: "System Monitoring & Disk Checks", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Daemon Health & Telemetry", badge: "SYS_HEALTH" },
+        { name: "User/Group & File Permissions", tier: "CORE EXPERTISE", status: "PRODUCTION READY", scope: "POSIX DAC / Sudoers", badge: "PRIV_ESC_SEC" },
+        { name: "Bash Automation Scripting", tier: "SPECIALIST", status: "FIELD TESTED", scope: "Cron Tasks & Automation", badge: "SCRIPTING" },
+        { name: "Docker Containerization", tier: "PRACTITIONER", status: "FIELD TESTED", scope: "Microservice Isolation", badge: "CONTAINERS" },
+        { name: "Web Servers (Caddy, Nginx, Apache)", tier: "SPECIALIST", status: "FIELD TESTED", scope: "TLS 1.3 Reverse Proxies", badge: "WEB_PROXY" },
+        { name: "AWS Cloud Fundamentals", tier: "PRACTITIONER", status: "OPERATIONAL", scope: "EC2, S3, IAM & VPC", badge: "CLOUD_SEC" },
+        { name: "Server Backup & Health Telemetry", tier: "SPECIALIST", status: "PRODUCTION READY", scope: "Encrypted Offsite Sync", badge: "DISASTER_REC" }
       ]
     }
   ]
@@ -249,15 +250,29 @@ export const educationData = [
 ];
 
 export const terminalCommandsHelp = [
-  { cmd: "help", desc: "List all accessible Batcomputer OS terminal commands" },
+  { cmd: "help", desc: "List all accessible system terminal commands" },
+  { cmd: "ls [-l]", desc: "List directory contents and cyber logs" },
+  { cmd: "pwd", desc: "Print current working directory" },
   { cmd: "whoami", desc: "Display current security credentials and operator dossier" },
-  { cmd: "skills", desc: "Scan and display full cyber defense and IT support capabilities" },
-  { cmd: "projects", desc: "List all 3D classified security projects and architecture pods" },
-  { cmd: "exp", desc: "Query incident response and enterprise employment telemetry" },
-  { cmd: "edu", desc: "Inspect academic credentials and computer science degree" },
+  { cmd: "skills", desc: "Inspect cyber defense arsenal and operational readiness" },
+  { cmd: "projects", desc: "Query classified 3D cyber projects and blueprints" },
+  { cmd: "uname -a", desc: "Display operating system and kernel architecture" },
+  { cmd: "uptime", desc: "Display system uptime and branch load statistics" },
+  { cmd: "date", desc: "Display current mission date and synchronized timestamp" },
+  { cmd: "ip a / ifconfig", desc: "Inspect network adapters, IPsec tunnels, and interfaces" },
+  { cmd: "netstat / ss", desc: "Display active network sockets and listening ports" },
+  { cmd: "top / ps aux", desc: "Display running defense daemons and processes" },
+  { cmd: "df -h", desc: "Display disk filesystem usage" },
+  { cmd: "free -m", desc: "Display system RAM and swap memory allocation" },
+  { cmd: "echo <msg>", desc: "Print text or environment variables" },
+  { cmd: "cat <file>", desc: "Display content of resume.txt, logs, or configs" },
+  { cmd: "exp", desc: "Query incident response and enterprise employment log" },
+  { cmd: "edu", desc: "Inspect academic credentials and degree dossier" },
   { cmd: "contact", desc: "Open encrypted communication channels to D R Akshay" },
-  { cmd: "batman", desc: "Trigger Wayne Enterprise Bat-Signal protocol easter egg" },
-  { cmd: "matrix", desc: "Engage real-time cyber defense data stream matrix mode" },
+  { cmd: "matrix", desc: "Engage real-time cyber defense matrix stream" },
+  { cmd: "exploit", desc: "Run zero-day intrusion defense simulation" },
   { cmd: "ping <host>", desc: "Send ICMP packets to verify endpoint connectivity" },
-  { cmd: "clear", desc: "Purge the terminal buffer and reset screen" }
+  { cmd: "clear", desc: "Purge the terminal buffer and reset screen" },
+  { cmd: "nyx <query>", desc: "Query Nyx AI tactical oracle directly in the terminal" },
+  { cmd: "exit", desc: "Terminate terminal session and return to UI" }
 ];
