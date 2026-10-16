@@ -276,7 +276,11 @@ export default function NyxChatbot({
         el.scrollIntoView({ behavior: 'smooth' });
       }
     } else if (btn.action === 'email') {
-      window.open(`mailto:${personalInfo.email}?subject=Inquiry%20via%20Nyx%20AI`, '_blank');
+      const link = document.createElement('a');
+      link.href = `mailto:${personalInfo.email}?subject=${encodeURIComponent('Inquiry via Nyx AI')}`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } else if (btn.action === 'send_query') {
       handleSendMessage(btn.query);
     }

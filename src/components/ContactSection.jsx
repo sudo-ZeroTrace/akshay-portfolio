@@ -29,12 +29,19 @@ export default function ContactSection() {
     sounds.playAlert();
     setIsSubmitted(true);
 
+    const emailSubject = formData.subject.trim() || 'Portfolio Inquiry';
+    const emailBody = `${formData.message.trim()}\n\n---\nSender: ${formData.senderName.trim() || 'Anonymous'}\nEmail: ${formData.senderEmail.trim() || 'Not specified'}`;
+
     const mailtoUrl = `mailto:${personalInfo.email}?subject=${encodeURIComponent(
-      `[SECURITY TRANSMISSION] ${formData.subject || 'Portfolio Inquiry'}`
-    )}&body=${encodeURIComponent(
-      `From: ${formData.senderName} (${formData.senderEmail})\n\nMessage:\n${formData.message}`
-    )}`;
-    window.open(mailtoUrl, '_blank');
+      emailSubject
+    )}&body=${encodeURIComponent(emailBody)}`;
+
+    // Trigger default mail client without creating an empty browser window/tab
+    const link = document.createElement('a');
+    link.href = mailtoUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -276,8 +283,42 @@ export default function ContactSection() {
             </button>
 
             {isSubmitted && (
-              <div className="p-3 rounded-lg bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 font-mono text-xs text-center animate-fadeIn glow-green">
-                ✓ Transmission dispatched to mail client! Alternatively, reach out directly at dr.akxhay@gmail.com
+              <div className="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/40 text-xs font-mono space-y-3 animate-fadeIn glow-green">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold">
+                  <Check className="w-4 h-4 text-emerald-400" />
+                  <span>Draft opened in your default email application!</span>
+                </div>
+                <div className="text-gray-300 text-[11px] leading-relaxed">
+                  <div>Recipient: <span className="text-emerald-300 font-bold">{personalInfo.email}</span></div>
+                  <div>Subject: <span className="text-cyan-300 font-bold">{formData.subject.trim() || 'Portfolio Inquiry'}</span></div>
+                </div>
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const emailSubject = formData.subject.trim() || 'Portfolio Inquiry';
+                      const emailBody = `${formData.message.trim()}\n\n---\nSender: ${formData.senderName.trim() || 'Anonymous'}\nEmail: ${formData.senderEmail.trim() || 'Not specified'}`;
+                      const mailtoUrl = `mailto:${personalInfo.email}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                      const link = document.createElement('a');
+                      link.href = mailtoUrl;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30 transition text-[11px] font-bold"
+                  >
+                    Open in Default Mail App
+                  </button>
+                  <a
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(personalInfo.email)}&su=${encodeURIComponent(formData.subject.trim() || 'Portfolio Inquiry')}&body=${encodeURIComponent(`${formData.message.trim()}\n\n---\nSender: ${formData.senderName.trim() || 'Anonymous'}\nEmail: ${formData.senderEmail.trim() || 'Not specified'}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg bg-slate-950 text-cyan-300 border border-cyan-500/30 hover:border-cyan-400 transition text-[11px] font-bold flex items-center gap-1"
+                  >
+                    <span>Open in Web Gmail</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
               </div>
             )}
           </form>
