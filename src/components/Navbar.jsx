@@ -41,6 +41,21 @@ export default function Navbar({
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // ESC key listener to close mobile menu or theme dropdown
+  useEffect(() => {
+    if (!showThemeMenu && !isMobileMenuOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowThemeMenu(false);
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showThemeMenu, isMobileMenuOpen]);
+
   const navLinks = [
     { name: 'HERO', href: '#hero' },
     { name: 'EXPERIENCE', href: '#experience' },

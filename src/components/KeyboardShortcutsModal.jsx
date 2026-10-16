@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { sounds } from '../utils/soundEffects';
 import { Command, X, Zap, Terminal, Volume2, Palette, Shield } from 'lucide-react';
 
 export default function KeyboardShortcutsModal({ isOpen, onClose }) {
+  // ESC key listener to close shortcuts guide modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        sounds.playBeep(700, 0.05);
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const shortcuts = [

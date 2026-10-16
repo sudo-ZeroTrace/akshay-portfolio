@@ -195,6 +195,7 @@ export default function App() {
       <NyxChatbot
         isOpen={isNyxOpen}
         onToggle={() => setIsNyxOpen((prev) => !prev)}
+        onClose={() => setIsNyxOpen(false)}
         onOpenResume={() => setIsResumeOpen(true)}
         activeTheme={theme}
       />

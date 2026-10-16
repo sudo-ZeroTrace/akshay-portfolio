@@ -13,6 +13,7 @@ import {
 export default function NyxChatbot({
   isOpen,
   onToggle,
+  onClose,
   onOpenResume,
   activeTheme = 'emerald'
 }) {
@@ -99,6 +100,26 @@ export default function NyxChatbot({
       }
     };
   }, []);
+
+  // ESC key listener to close Nyx chat window
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        stopSpeaking();
+        if (onClose) {
+          onClose();
+        } else if (onToggle) {
+          onToggle();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose, onToggle]);
 
   // Auto-scroll to bottom of messages
   const scrollToBottom = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { experiences } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
 import {
@@ -8,6 +8,21 @@ import {
 
 export default function ExperienceSection() {
   const [expandedId, setExpandedId] = useState(experiences[0].id);
+
+  // ESC key listener to collapse expanded experience description
+  useEffect(() => {
+    if (!expandedId) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        sounds.playBeep(700, 0.05);
+        setExpandedId(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [expandedId]);
 
   const toggleExpand = (id) => {
     sounds.playBeep(950, 0.04);

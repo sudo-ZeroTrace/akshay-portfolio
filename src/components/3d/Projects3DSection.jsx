@@ -579,6 +579,23 @@ export default function Projects3DSection({ theme = 'emerald' }) {
     }, 450);
   };
 
+  // ESC key listener to close full-screen project description modal
+  useEffect(() => {
+    if (!selectedProject) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        sounds.playBeep(700, 0.05);
+        setSelectedProject(null);
+        setSimulatedLog('');
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedProject]);
+
   return (
     <section id="projects" className="relative py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto z-10">
       {/* SECTION HEADER */}

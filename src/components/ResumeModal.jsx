@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { sounds } from '../utils/soundEffects';
 import { personalInfo, experiences, educationData } from '../data/portfolioData';
 import { resumeDetails } from '../data/nyxKnowledgeBase';
@@ -9,6 +9,22 @@ import {
 } from 'lucide-react';
 
 export default function ResumeModal({ isOpen, onClose }) {
+  // ESC key listener to close resume preview modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        sounds.playBeep(700, 0.05);
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const handlePrint = () => {

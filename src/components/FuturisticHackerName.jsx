@@ -48,15 +48,10 @@ export default function FuturisticHackerName() {
     }, 45);
   };
 
-  // Run decryption on mount and periodically every 12 seconds
+  // Clean up interval on unmount
   useEffect(() => {
-    triggerDecryption();
-    const loopInterval = setInterval(() => {
-      triggerDecryption();
-    }, 12000);
     return () => {
-      clearInterval(intervalRef.current);
-      clearInterval(loopInterval);
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 

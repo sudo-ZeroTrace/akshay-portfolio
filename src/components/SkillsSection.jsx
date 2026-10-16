@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { skillsData } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
 import {
@@ -11,6 +11,22 @@ export default function SkillsSection() {
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [inspectedSkill, setInspectedSkill] = useState(null);
+
+  // ESC key listener to close inspected skill popup
+  useEffect(() => {
+    if (!inspectedSkill) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        sounds.playBeep(700, 0.05);
+        setInspectedSkill(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [inspectedSkill]);
 
   const iconMap = {
     Server: Server,
