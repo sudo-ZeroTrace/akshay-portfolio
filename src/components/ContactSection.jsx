@@ -3,8 +3,7 @@ import { personalInfo } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
 import {
   Mail, Phone, MapPin, Send, Check, Copy,
-  Shield, Radio, Lock, Terminal, MessageSquare, ExternalLink,
-  Cpu, Zap
+  Shield, Radio, Lock, Terminal, MessageSquare, ExternalLink
 } from 'lucide-react';
 
 export default function ContactSection() {

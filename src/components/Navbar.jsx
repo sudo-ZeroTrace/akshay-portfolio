@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { sounds } from '../utils/soundEffects';
 import {
-  Terminal, Shield, Volume2, VolumeX, Menu, X,
-  Palette, Cpu, Activity, Lock, KeyRound, HelpCircle,
-  Clock, Sparkles, FileText
+  Terminal, Volume2, VolumeX, Menu, X,
+  Palette, HelpCircle, Sparkles, FileText
 } from 'lucide-react';
 
 export default function Navbar({

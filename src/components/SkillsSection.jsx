@@ -3,8 +3,7 @@ import { skillsData } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
 import {
   ShieldAlert, Server, Lock, Terminal, Search,
-  Cpu, CheckCircle2, ChevronRight, Sparkles, Filter, Zap,
-  Activity, Shield, Check, X
+  CheckCircle2, ChevronRight, Zap, X
 } from 'lucide-react';
 
 export default function SkillsSection() {

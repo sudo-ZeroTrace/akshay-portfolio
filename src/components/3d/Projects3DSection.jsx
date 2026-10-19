@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { projects } from '../../data/portfolioData';
 import { sounds } from '../../utils/soundEffects';
 import {
-  Shield, ChevronLeft, ChevronRight, Maximize2, X, Play,
+  ChevronLeft, ChevronRight, Maximize2, X, Play,
   CheckCircle, Layers, Eye, Zap
 } from 'lucide-react';
 

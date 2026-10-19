@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { sounds } from '../utils/soundEffects';
-import { ShieldCheck, Cpu, Terminal, Zap, RefreshCw } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 const TARGET_NAME = "D R AKSHAY";
 const GLYPHS = "0123456789ABCDEF!@#$%^&*()_+-=[]{}|;:,.<>?/アイウエオカキクケコサシスセソタチツテト";

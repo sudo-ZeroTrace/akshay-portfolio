@@ -194,7 +194,6 @@ export default function BackgroundScene3D({ theme = 'emerald', intensity = 0.85 
       animationFrameId = requestAnimationFrame(animate);
       if (document.hidden) return;
 
-      const delta = clock.getDelta();
       const elapsed = clock.getElapsedTime();
 
       // Smooth Camera Parallax to Mouse

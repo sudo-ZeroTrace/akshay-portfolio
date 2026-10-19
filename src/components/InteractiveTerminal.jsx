@@ -219,7 +219,7 @@ export default function InteractiveTerminal({ isOpen, onClose }) {
 
         case 'echo':
           if (arg === '$USER') response = 'akshay';
-          else if (arg === '$HOSTNAME') response = personalInfo.batcomputerNode;
+          else if (arg === '$HOSTNAME') response = personalInfo.systemNode;
           else if (arg === '$SHELL') response = '/bin/bash';
           else if (arg === '$PATH') response = '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin';
           else response = arg || '';
@@ -296,7 +296,7 @@ export default function InteractiveTerminal({ isOpen, onClose }) {
           break;
 
         case 'hostname':
-          response = personalInfo.batcomputerNode;
+          response = personalInfo.systemNode;
           break;
 
         case 'history':
@@ -366,13 +366,12 @@ export default function InteractiveTerminal({ isOpen, onClose }) {
         case 'reboot':
           sounds.playAlert();
           setHistory([
-            { type: 'system', text: "[SYSTEM REBOOT INITIATED]...\nFlushing buffers...\nRestarting cyber defense daemons...\nNode WAYNE-SEC-NODE-KOCHI-01 back online in 0.02s." }
+            { type: 'system', text: "[SYSTEM REBOOT INITIATED]...\nFlushing buffers...\nRestarting cyber defense daemons...\nNode CYBER-SEC-NODE-KOCHI-01 back online in 0.02s." }
           ]);
           setInputVal('');
           return;
 
         case 'matrix':
-        case 'batman':
         case 'hacker':
           sounds.playAlert();
           response = `

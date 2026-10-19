@@ -12,7 +12,7 @@ export const personalInfo = {
   github: "https://github.com/sudo-ZeroTrace",
   twitter: "https://x.com",
   instagram: "https://instagram.com",
-  batcomputerNode: "WAYNE-SEC-NODE-KOCHI-01",
+  systemNode: "CYBER-SEC-NODE-KOCHI-01",
   securityClearance: "LEVEL 5 // ENTERPRISE SEC_OPS",
   summary:
     "Security & IT Support Engineer with hands-on experience supporting enterprise infrastructure across 1,000+ branches pan-India. Practical exposure to endpoint security, EDR/XDR (K7, Seqrite, Sophos), Active Directory, Fortinet firewalls, IPsec VPNs, network security, and incident response. Experienced in investigating security alerts, malware incidents, analyzing endpoint/log telemetry, performing containment and remediation, and safeguarding distributed enterprise environments.",
@@ -68,7 +68,7 @@ export const projects = [
   {
     id: "proj-1",
     title: "Splunk SIEM Incident Response & Log Telemetry Lab",
-    codename: "BATCAVE-TELEMETRY-OMEGA",
+    codename: "SIEM-TELEMETRY-OMEGA",
     category: "Security Operations",
     badge: "SOC LAB",
     shortDesc:
@@ -84,7 +84,7 @@ export const projects = [
   {
     id: "proj-2",
     title: "Fortinet IPsec VPN & Multi-Branch Firewall Mesh",
-    codename: "GOTHAM-SHIELD-FORTINET",
+    codename: "CYBER-SHIELD-FORTINET",
     category: "Network Defense",
     badge: "INFRASTRUCTURE",
     shortDesc:
@@ -100,7 +100,7 @@ export const projects = [
   {
     id: "proj-3",
     title: "Active Directory & Group Policy Hardening Suite",
-    codename: "WAYNE-CORP-IDENTITY-DEFENSE",
+    codename: "ENTERPRISE-IDENTITY-DEFENSE",
     category: "Identity & Access",
     badge: "IDENTITY SECURITY",
     shortDesc:
@@ -116,7 +116,7 @@ export const projects = [
   {
     id: "proj-4",
     title: "EDR/XDR Threat Containment & Malware Sandbox Rig",
-    codename: "DARK-KNIGHT-QUARANTINE",
+    codename: "ZERO-DAY-QUARANTINE",
     category: "Endpoint Security",
     badge: "MALWARE ANALYSIS",
     shortDesc:
@@ -148,7 +148,7 @@ export const projects = [
   {
     id: "proj-6",
     title: "Hardened Linux Micro-Infrastructure & Container Mesh",
-    codename: "BATCOMPUTER-CORE-DAEMON",
+    codename: "CYBER-CORE-DAEMON",
     category: "Systems & Cloud",
     badge: "DEVOPS & CLOUD",
     shortDesc:

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { sounds } from '../utils/soundEffects';
-import { Command, X, Zap, Terminal, Volume2, Palette, Shield } from 'lucide-react';
+import { Command, X } from 'lucide-react';
 
 export default function KeyboardShortcutsModal({ isOpen, onClose }) {
   // ESC key listener to close shortcuts guide modal

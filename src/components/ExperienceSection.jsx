@@ -3,7 +3,7 @@ import { experiences } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
 import {
   Server, Shield, Radio, CheckCircle, ChevronDown,
-  Building, Calendar, MapPin, Award, Terminal, Cpu, Zap
+  Building, Calendar, MapPin
 } from 'lucide-react';
 
 export default function ExperienceSection() {
@@ -47,7 +47,7 @@ export default function ExperienceSection() {
 
       {/* TIMELINE CONTAINER */}
       <div className="relative border-l-2 border-emerald-500/30 ml-4 sm:ml-8 space-y-12">
-        {experiences.map((exp, idx) => {
+        {experiences.map((exp) => {
           const isExpanded = expandedId === exp.id;
           return (
             <div key={exp.id} className="relative pl-6 sm:pl-10">

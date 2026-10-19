@@ -11,7 +11,7 @@ export const nyxProfile = {
   linkedin: "https://www.linkedin.com/in/drakshay",
   github: "https://github.com/sudo-ZeroTrace",
   clearance: "LEVEL 5 // ENTERPRISE SEC_OPS",
-  node: "WAYNE-SEC-NODE-KOCHI-01",
+  node: "CYBER-SEC-NODE-KOCHI-01",
   stats: {
     branches: "1,000+ branches pan-India",
     endpoints: "3,500+ endpoints",
@@ -78,12 +78,12 @@ export const resumeDetails = {
     {
       title: "Key Projects & Security Labs",
       projects: [
-        "Splunk SIEM Incident Response Lab (BATCAVE-TELEMETRY-OMEGA) - Telemetry ingestion & brute-force correlation",
-        "Fortinet IPsec VPN Multi-Branch Mesh (GOTHAM-SHIELD-FORTINET) - AES-256 IKEv2 hub-and-spoke failover",
-        "Active Directory & GPO Hardening Suite (WAYNE-CORP-IDENTITY-DEFENSE) - CIS benchmarks & PowerShell automation",
-        "EDR/XDR Threat Containment Rig (DARK-KNIGHT-QUARANTINE) - MITRE ATT&CK simulation & host isolation",
+        "Splunk SIEM Incident Response Lab (SIEM-TELEMETRY-OMEGA) - Telemetry ingestion & brute-force correlation",
+        "Fortinet IPsec VPN Multi-Branch Mesh (CYBER-SHIELD-FORTINET) - AES-256 IKEv2 hub-and-spoke failover",
+        "Active Directory & GPO Hardening Suite (ENTERPRISE-IDENTITY-DEFENSE) - CIS benchmarks & PowerShell automation",
+        "EDR/XDR Threat Containment Rig (ZERO-DAY-QUARANTINE) - MITRE ATT&CK simulation & host isolation",
         "Web App Security & Pentest Rig (ORACLE-VULN-SCANNER) - Burp Suite & OWASP Top 10 auditing",
-        "Hardened Linux Micro-Infrastructure (BATCOMPUTER-CORE-DAEMON) - Docker, Caddy TLS 1.3, Bash cron daemons"
+        "Hardened Linux Micro-Infrastructure (CYBER-CORE-DAEMON) - Docker, Caddy TLS 1.3, Bash cron daemons"
       ]
     },
     {

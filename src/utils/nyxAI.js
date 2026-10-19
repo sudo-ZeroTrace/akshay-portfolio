@@ -254,17 +254,17 @@ export function generateNyxResponse(userQuery) {
       text:
         `🚀 **CLASSIFIED CYBER DEFENSE LABS & PROJECTS**\n\n` +
         `Akshay has engineered 6 production-grade security and infrastructure labs:\n\n` +
-        `1. **Splunk SIEM Incident Response Lab** (*BATCAVE-TELEMETRY-OMEGA*)\n` +
+        `1. **Splunk SIEM Incident Response Lab** (*SIEM-TELEMETRY-OMEGA*)\n` +
         `   • Real-time brute force (Event ID 4625) detection, log correlation, and automated containment.\n\n` +
-        `2. **Fortinet IPsec VPN & Multi-Branch Mesh** (*GOTHAM-SHIELD-FORTINET*)\n` +
+        `2. **Fortinet IPsec VPN & Multi-Branch Mesh** (*CYBER-SHIELD-FORTINET*)\n` +
         `   • Hub-and-spoke IKEv2 AES-256 encrypted VPN mesh with failover routing and firewall policies.\n\n` +
-        `3. **Active Directory & GPO Hardening Suite** (*WAYNE-CORP-IDENTITY-DEFENSE*)\n` +
+        `3. **Active Directory & GPO Hardening Suite** (*ENTERPRISE-IDENTITY-DEFENSE*)\n` +
         `   • Automated PowerShell auditing, Tiered Admin Model, LAPS, and CIS Benchmark GPO lockdown.\n\n` +
-        `4. **EDR/XDR Threat Containment & Sandbox** (*DARK-KNIGHT-QUARANTINE*)\n` +
+        `4. **EDR/XDR Threat Containment & Sandbox** (*ZERO-DAY-QUARANTINE*)\n` +
         `   • MITRE ATT&CK attack simulation, process injection analysis, and host network isolation.\n\n` +
         `5. **Web App Security & Penetration Rig** (*ORACLE-VULN-SCANNER*)\n` +
         `   • Burp Suite, Nmap, Wireshark testing against OWASP Top 10 vulnerabilities.\n\n` +
-        `6. **Hardened Linux Micro-Infrastructure** (*BATCOMPUTER-CORE-DAEMON*)\n` +
+        `6. **Hardened Linux Micro-Infrastructure** (*CYBER-CORE-DAEMON*)\n` +
         `   • Docker containerization, Caddy TLS 1.3 reverse proxy, Bash cron watchdogs, and GPG backups.`,
       actionButtons: [
         { label: '📍 Enter 3D Cyber Armory', action: 'scroll_section', target: 'projects', icon: 'Shield' },
@@ -451,14 +451,14 @@ export function generateNyxResponse(userQuery) {
     };
   }
 
-  // 11. EASTER EGGS (BATMAN / ARKHAM / CYBER HACKER)
-  if (matchesAny(query, ['batman', 'dark knight', 'bruce wayne', 'arkham', 'gotham', 'joker', 'batcave'])) {
+  // 11. EASTER EGGS (CYBER HACKER / ZERO-DAY DEFENSE)
+  if (matchesAny(query, ['hack', 'hacker', 'matrix', 'root', 'cyber', 'zero day', 'exploit', 'sudo'])) {
     return {
       text:
-        `🦇 **ENCRYPTED FILE: PROTOCOL WAYNE // CLASSIFIED**\n\n` +
-        `*"It's not who I am underneath, but what I do that defines me."*\n\n` +
-        `Akshay's portfolio is inspired by the tactical dark-knight cyber aesthetic: relentless defense, disciplined vigilance, and zero downtime for the enterprise branches under his watch.\n\n` +
-        `Node **${personalInfo.batcomputerNode}** is currently standing guard. What intel on Akshay do you require, detective?`,
+        `💻 **CYBER DEFENSE PROTOCOL // ROOT AUTHORIZATION GRANTED**\n\n` +
+        `*"Security is not a product, but a continuous discipline of defense and vigilance."*\n\n` +
+        `Akshay's operational doctrine is rooted in enterprise cyber defense: rapid threat isolation, proactive hardening, and zero downtime for the 1,000+ branches under his watch.\n\n` +
+        `Node **${personalInfo.systemNode}** is currently standing guard. What intel on Akshay do you require?`,
       actionButtons: [
         { label: '🛡️ Explore Cyber Arsenal', action: 'scroll_section', target: 'skills', icon: 'Shield' },
         { label: '📄 Inspect Resume Dossier', action: 'open_resume', icon: 'FileText' }

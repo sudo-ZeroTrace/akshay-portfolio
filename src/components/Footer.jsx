@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
-import { Shield, ArrowUp, Terminal, Radio, Cpu, Lock, FileText } from 'lucide-react';
+import { ArrowUp, Terminal, Cpu, FileText } from 'lucide-react';
 
 export default function Footer({ onOpenTerminal, onOpenResume }) {
   const [currentTime, setCurrentTime] = useState('');

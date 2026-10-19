@@ -13,7 +13,7 @@ An elite, high-performance **Futuristic Dark Hacker & 3D Cyber Defense Portfolio
    - Interactive re-decrypt trigger on hover and on click with synthesized Web Audio sound feedback.
 
 2. **3D Quantum Cyber Defense Core & Matrix Rain Background**:
-   - Replaced Batman elements with an imposing **3D Quantum Defense Core (Torus Knot + Icosahedron)** with glowing metallic dark mesh and neon wireframe shaders.
+   - Engineered an imposing **3D Quantum Defense Core (Torus Knot + Icosahedron)** with glowing metallic dark mesh and neon wireframe shaders.
    - **Concentric Cyber Firewall Rings**: Rotating gimbal rings tracking spatial defense coordinates.
    - **Matrix Code Rainfall & Live Linux Exploit Logs**: Cascading vertical streams of green & cyan data packets, real Linux kernel diagnostics, and intrusion containment logs floating with 3D perspective depth.
    - **Subterranean Cyber Grid**: Digital wireframe ground plane receding into the horizon.

@@ -4,10 +4,10 @@ import { generateNyxResponse } from '../utils/nyxAI';
 import { quickSuggestions } from '../data/nyxKnowledgeBase';
 import { personalInfo } from '../data/portfolioData';
 import {
-  MessageSquare, X, Send, Mic, MicOff, Volume2, VolumeX,
-  Minimize2, Maximize2, Trash2, Sparkles, Shield, Cpu,
-  ExternalLink, FileText, Download, Check, Copy, Radio,
-  CornerDownLeft, Play, Square, User, Terminal
+  X, Send, Mic, Volume2, VolumeX,
+  Minimize2, Maximize2, Trash2, Sparkles,
+  ExternalLink, FileText, Download, Check, Copy,
+  CornerDownLeft, Play, Square, User
 } from 'lucide-react';
 
 export default function NyxChatbot({

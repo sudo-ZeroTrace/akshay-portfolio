@@ -1,6 +1,6 @@
 import React from 'react';
 import { educationData } from '../data/portfolioData';
-import { GraduationCap, Award, BookOpen, CheckCircle, ShieldCheck, Cpu } from 'lucide-react';
+import { GraduationCap, Award, CheckCircle, ShieldCheck } from 'lucide-react';
 
 export default function EducationSection() {
   const edu = educationData[0];

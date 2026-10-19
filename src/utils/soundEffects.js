@@ -69,7 +69,7 @@ class SoundEffects {
     }
   }
 
-  // Batcomputer sonar pulse / alert chime
+  // Tactical cyber sonar pulse / alert chime
   playAlert() {
     if (this.muted) return;
     try {

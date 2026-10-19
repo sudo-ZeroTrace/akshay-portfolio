@@ -3,9 +3,8 @@ import { personalInfo } from '../data/portfolioData';
 import { sounds } from '../utils/soundEffects';
 import FuturisticHackerName from './FuturisticHackerName';
 import {
-  Shield, Terminal, ShieldAlert, Cpu, ArrowDown,
-  Download, Send, Activity, Lock, Radio, Server,
-  Sparkles, Key, Zap, Crosshair, ExternalLink, FileText
+  Shield, Terminal, ArrowDown, Activity, Server,
+  Sparkles, ExternalLink, FileText
 } from 'lucide-react';
 
 export default function HeroSection({ onOpenTerminal, onOpenNyx, onOpenResume }) {
@@ -105,9 +104,6 @@ export default function HeroSection({ onOpenTerminal, onOpenNyx, onOpenResume })
               src="/akshay-profile.jpg"
               alt="D R Akshay - IT Support & Security Engineer"
               className="w-full h-full object-cover object-top filter contrast-105 group-hover:contrast-115 transition duration-300"
-              onError={(e) => {
-                e.target.src = '/batman-backlit.jpg';
-              }}
             />
             {/* Ambient cyber overlay */}
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/10 to-slate-950/40 pointer-events-none" />

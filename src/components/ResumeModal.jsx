@@ -3,7 +3,7 @@ import { sounds } from '../utils/soundEffects';
 import { personalInfo, experiences, educationData } from '../data/portfolioData';
 import { resumeDetails } from '../data/nyxKnowledgeBase';
 import {
-  FileText, Download, Printer, X, ExternalLink,
+  FileText, Printer, X, ExternalLink,
   Shield, CheckCircle2, Building, GraduationCap,
   Mail, Phone, MapPin, Sparkles
 } from 'lucide-react';
