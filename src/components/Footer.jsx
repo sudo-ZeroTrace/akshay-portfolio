@@ -95,7 +95,7 @@ export default function Footer({ onOpenTerminal, onOpenResume }) {
 
       <div className="max-w-7xl mx-auto mt-8 pt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between text-[10px] text-gray-600">
         <div>
-          © {new Date().getFullYear()} D R Akshay. All Rights Reserved. Futuristic Dark Hacker Theme.
+          © {new Date().getFullYear()} D R Akshay. All Rights Reserved.
         </div>
         <div className="mt-2 sm:mt-0 flex gap-4">
           <a href="#hero" className="hover:text-emerald-400 transition">Base</a>
