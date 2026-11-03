@@ -1,4 +1,4 @@
-# ⚡ D R AKSHAY — Futuristic Dark Hacker // 3D Cyber Defense Terminal
+# ⚡ D R AKSHAY — IT Support & Security Engineer
 
 An elite, high-performance **Futuristic Dark Hacker & 3D Cyber Defense Portfolio** built for **D R Akshay (IT Support & Security Engineer | Windows & Linux Specialist)**. Engineered with React 19, Three.js WebGL graphics, Tailwind CSS v4, dynamic matrix code streams, and an interactive decryption glitch name animation.
 
