@@ -27,6 +27,9 @@ jobs:
       - name: Build React application
         run: npm run build
 
+      - name: Verify built title
+        run: grep -i "<title>" dist/index.html
+
       - name: Configure SSH
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -58,4 +61,4 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa \
             "$EC2_USER@$EC2_HOST" \
-            "sudo mkdir -p /var/www/html && sudo rsync -av --delete /tmp/portfolio-dist/ /var/www/html/"
+            "sudo mkdir -p /var/www/Project1 && sudo rsync -av --delete /tmp/portfolio-dist/ /var/www/Project1/"
